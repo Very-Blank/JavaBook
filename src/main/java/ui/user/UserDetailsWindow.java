@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 import ui.*;
+import data.User;
 
 public class UserDetailsWindow extends DetailsWindow<VBox> {
     private DatePicker datePicker;
@@ -22,34 +23,40 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
     private TextField email;
     private PhoneNumber phoneNumber;
 
-    private VBox fields;
-    private VBox browser;
+    // private VBox fields;
+    // private VBox browser;
 
     private Button loan;
     private Button returnBooks;
     private Button save;
+    private User user;
 
-    public UserDetailsWindow(Assets assets){
+    public UserDetailsWindow(User user, Assets assets){
         super(new VBox(), assets, "User Details", "Edit User");
-        //
-        //LabeledField<TextField> name = new LabeledField<TextField>("Name:", new TextField("USER'S NAME"));
-        //this.name = name.child;
-        //LabeledField<TextField> email = new LabeledField<TextField>("Email:", new TextField("EMAIL THIS IS PADDING TO"));
-        //this.email = email.child;
-        //LabeledField<PhoneNumber> phoneNumber = new LabeledField<PhoneNumber>("Phone Number:", new PhoneNumber());
-        //this.phoneNumber = phoneNumber.child;
-        //LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Birthday:", new DatePicker());
-        //this.datePicker = datePicker.child;
-        //datePicker.child.setValue(LocalDate.now());
-        //
-        //this.loan = new Button("Add Loan");
-        //this.returnBooks = new Button("Return Books");
-        //this.save = new Button("Save");
-        //
-        //HBox buttons = new HBox(this.loan, this.returnBooks);
-        //
-        //super.content.getChildren().addAll(this.name, this.email, this.phoneNumber, this.datePicker);
-        //super.dialogue.getChildren().addAll(this.save);
+        this.user = user;
+        this.name = new TextField(this.user.name());
+        this.email = new TextField("EMAIL THIS IS PADDING TO");
+        this.phoneNumber = new PhoneNumber(assets);
+        this.datePicker = new DatePicker(LocalDate.now());
+
+        LabeledField<TextField> name = new LabeledField<TextField>("Name:", this.name, assets);
+        LabeledField<TextField> email = new LabeledField<TextField>("Email:", this.email, assets);
+        LabeledField<PhoneNumber> phoneNumber = new LabeledField<PhoneNumber>("Phone Number:", this.phoneNumber, assets);
+        LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Birthday:", this.datePicker, assets);
+
+        // this.loan = new Button("Add Loan");
+        // this.returnBooks = new Button("Return Books");
+        // this.save = new Button("Save");
+
+        // HBox buttons = new HBox(this.loan, this.returnBooks);
+
+        super.content.getChildren().addAll(name, email, phoneNumber, datePicker);
+    }
+
+
+    public User getUser(){
+        this.user.update(this.name.getText(), this.email.getText(), this.phoneNumber.getPhoneNumber(), this.user.loans(), getDatePickerValue());
+        return this.user;
     }
 
     public void setDatePickerValue(LocalDate date){

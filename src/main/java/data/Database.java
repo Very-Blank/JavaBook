@@ -81,6 +81,10 @@ public class Database {
         return this.users.setValueAt(user);
     }
 
+    public void deleteUser(User user) throws DataException {
+        this.users.removeValueAt(user);
+    }
+
     public ArrayList<User> getUsers() {
         ArrayList<User> dense = this.users.getDense();
         ArrayList<User> users = new ArrayList<User>(dense.size());

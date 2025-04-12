@@ -69,5 +69,9 @@ public class UserBox extends HBox {
         return vbox;
     }
 
+    public User getUser(){
+        return this.user;
+    }
+
 }
 

@@ -3,8 +3,6 @@ import java.time.LocalDate;
 
 import org.json.JSONObject;
 
-import data.Data;
-
 public class Loan extends Data<Loan> {
     private int bookID;
     private int userID;

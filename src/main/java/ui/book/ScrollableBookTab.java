@@ -38,15 +38,11 @@ public class ScrollableBookTab extends ScrollableTab{
             content.setHgap(7);
             content.setVgap(7);
 
-            try {
-                for(int i = 0; i < bookDatas.size(); i++){
-                    BookBox bookBox = new BookBox(bookDatas.get(i), this.assets);
-                    bookBoxs.add(bookBox);
+            for(int i = 0; i < bookDatas.size(); i++){
+                BookBox bookBox = new BookBox(bookDatas.get(i), this.assets);
+                bookBoxs.add(bookBox);
 
-                    content.getChildren().add(bookBox);
-                }
-            } catch (Exception e) {
-                System.out.println("something wrong");
+                content.getChildren().add(bookBox);
             }
 
             content.setBackground(assets.background);

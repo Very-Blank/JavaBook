@@ -59,7 +59,6 @@ public class Main extends Application {
             }
         });
 
-        // FIXME: add delete button
         this.bookTab = new ScrollableBookTab(this.assets, database.getBooks());
 
         this.bookTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
@@ -148,20 +147,70 @@ public class Main extends Application {
 
         this.userTab = new ScrollableUserTab(this.assets, database.getUsers());
 
-        this.userTab.setAddAction(new EventHandler<ActionEvent>() {
+        this.userTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                try {
-                    Stage newWindow = new UserDetailsWindow(assets);
-                    newWindow.showAndWait();
-                } catch (Exception e) {
-                    System.out.println("failed to open window");
+                ArrayList<UserBox> userBoxs = userTab.getUserBoxs();
+                for (int i = 0; i < userBoxs.size(); i++) {
+                    UserBox userBox = userBoxs.get(i);
+                    userBox.setOnMouseClicked((_) -> {
+                        try {
+                            User user = userBox.getUser();
+                            UserDetailsWindow newWindow = new UserDetailsWindow(user, assets);
+
+                            newWindow.setBackAction(new EventHandler<ActionEvent>() {
+                                public void handle(ActionEvent s) {
+                                    newWindow.close();
+                                }
+                            });
+
+                            newWindow.setDeleteAction(new EventHandler<ActionEvent>() {
+                                public void handle(ActionEvent s) {
+                                    try {
+                                        database.deleteUser(newWindow.getUser());
+                                    } catch(Exception e){
+                                        System.out.println("failed to delete user");
+                                        System.out.println(e.getMessage());
+                                    }
+
+                                    userTab.updateContents(database.getUsers());
+                                    newWindow.close();
+                                }
+                            });
+
+                            newWindow.setSaveAction(new EventHandler<ActionEvent>() {
+                                public void handle(ActionEvent s) {
+                                    database.updateUser(newWindow.getUser());
+
+                                    userTab.updateContents(database.getUsers());
+                                    newWindow.close();
+                                }
+                            });
+
+                            newWindow.showAndWait();
+                        } catch (Exception e) {
+                            System.out.println("failed to open window");
+                            System.out.println(e.getMessage());
+                        }
+                    });
                 }
             }
         });
 
+
+        // this.userTab.setAddAction(new EventHandler<ActionEvent>() {
+        //     public void handle(ActionEvent t) {
+        //         try {
+        //             Stage newWindow = new UserDetailsWindow(assets);
+        //             newWindow.showAndWait();
+        //         } catch (Exception e) {
+        //             System.out.println("failed to open window");
+        //         }
+        //     }
+        // });
+
         this.tabBar.getTabs().addAll(this.bookTab, this.userTab);
 
-        this.tabBar.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
+        this.tabBar.getSelectionModel().selectedItemProperty().addListener((_, _, newTab) -> {
             if (newTab == bookTab) {
                 bookTab.updateContents(database.getBooks());
             } else if (newTab == userTab) {

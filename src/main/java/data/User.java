@@ -66,4 +66,32 @@ public class User extends Data<User> {
         }
         return new User(this.getID(), this.name, this.email, this.phoneNumber, newList, this.birthday);
     }
+
+    public void update(String name, String email, String phoneNumber, ArrayList<Integer> loans, LocalDate birthday){
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.loans = loans;
+        this.birthday = birthday;
+    }
+
+    public String name(){
+        return this.name;
+    }
+
+    public String email(){
+        return this.email;
+    }
+
+    public String phoneNumber(){
+        return this.phoneNumber;
+    }
+
+    public ArrayList<Integer> loans(){
+        return this.loans;
+    }
+
+    public LocalDate birthday(){
+        return this.birthday;
+    }
 }

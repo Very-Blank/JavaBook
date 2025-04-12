@@ -22,43 +22,42 @@ import ui.*;
 
 
 public class ScrollableUserTab extends ScrollableTab{
+    private ArrayList<UserBox> userBoxs;
+
     public ScrollableUserTab(Assets assets, ArrayList<User> userDatas){
         super(assets, "Users ");
         updateContents(userDatas);
     }
 
     public void updateContents(ArrayList<User> userDatas){
+        this.userBoxs = new ArrayList<UserBox>(userDatas.size());
 
         if(userDatas.size() != 0){
-            VBox list = new VBox(7.0);
-            list.prefWidthProperty().bind(this.scrollPane.widthProperty());
+            VBox content = new VBox(7.0);
+            content.prefWidthProperty().bind(this.scrollPane.widthProperty());
 
-            try {
-                for(int i = 0; i < userDatas.size(); i++){
-                    String padding = "  ";
-                    final double fontSize = 20.0;
+            for(int i = 0; i < userDatas.size(); i++){
+                UserBox userBox = new UserBox(userDatas.get(i), this.assets);
+                userBoxs.add(userBox);
 
-                    UserBox userPane = new UserBox(userDatas.get(i), this.assets);
-
-                    userPane.setOnMouseClicked((event) -> {
-                        try {
-                            Stage newWindow = new UserDetailsWindow(assets);
-                            newWindow.showAndWait();
-                        } catch (Exception e) {
-                            System.out.println("failed to open window");
-                        }
-                    });
-
-                    list.getChildren().add(userPane);
-                }
-            } catch (Exception e) {
-                System.out.println("something wrong");
+                content.getChildren().add(userBox);
             }
 
-            scrollPane.setContent(list);
+            content.setBackground(assets.background);
+            scrollPane.setContent(content);
         } else{
+            VBox content = new VBox(7.0);
+            content.prefWidthProperty().bind(this.scrollPane.widthProperty());
 
+            content.setBackground(assets.background);
+            scrollPane.setContent(content);
         }
+
+        super.updateContents();
+    }
+
+    public ArrayList<UserBox> getUserBoxs(){
+        return this.userBoxs;
     }
 }
 

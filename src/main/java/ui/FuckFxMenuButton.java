@@ -80,6 +80,12 @@ public class FuckFxMenuButton extends Button {
         }
     }
 
+    public void closePopup(){
+        if (popup.isShowing()) {
+            this.popup.hide();
+        }
+    }
+
     @Override
     public void fire() {
         super.fire();
