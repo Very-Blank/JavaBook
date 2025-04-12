@@ -1,22 +1,24 @@
-#Header
-//All data is stored a little endian
-//This layout will not change:
-//----
-FileSignature: [8]u8 = "kirjasto"
-FileVersion: u8
-Date: u32 // DD = u8, MM = u8, YYYY = u16,
-Padding: u48 // This can be used for spesific FileVersion data, but size can't be chaged!
-//----
-
-//--- This can
-// Indices to data chunks.
-// Structure Of indices: {name: [4]u8, startIndex: u64}, Illegal name: {0, 0, 0, 0}
-// Data will end at where the next one starts.
-// If name is not recognized, ignore that data chunk.
-// ---
-End marker: [8]u8
-
-#BinData
-// NO OTHER DATA that is not included included in the indices can be stored HERE!
-
-End marker: [8]u8
+```json
+{
+  "books":[
+  {
+    "id": -1,
+    "loan": -1,
+    "title": "Learning Java",
+    "author": "Alice Brown",
+    "summary": "A comprehensive guide to mastering Java programming.",
+    "imagePath": "src/main/resources/bookCovers/dummy_150x150_000000_ffb2fc.png",
+    "publication": "31 December 2022"
+  }],
+  "users": [
+    {
+      "id": -1,
+      "name": "Emma Watson",
+      "email": "emma.watson@example.com",
+      "phoneNumber": "+1 555-123-4567",
+      "loans": [],
+      "birthday": "15 March 1990"
+    },
+  ]
+}
+```
