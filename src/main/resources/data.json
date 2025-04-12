@@ -1,0 +1,64 @@
+{
+  "books":[
+  {
+    "id": -1,
+    "loan": -1,
+    "title": "The Great Adventure",
+    "author": "John Doe",
+    "summary": "An epic journey through unknown lands filled with danger and wonder.",
+    "imagePath": "src/main/resources/bookCovers/dummy_150x150_000000_ffb2fc.png",
+    "publication": "15 March 2020"
+  },
+  {
+    "id": -1,
+    "loan": -1,
+    "title": "Mystery of the Night",
+    "author": "Jane Smith",
+    "summary": "A thrilling tale of secrets uncovered under the cover of darkness.",
+    "imagePath": "src/main/resources/bookCovers/dummy_150x150_000000_ffb2fc.png",
+    "publication": "05 April 2019"
+  },
+  {
+    "id": -1,
+    "loan": -1,
+    "title": "Learning Java",
+    "author": "Alice Brown",
+    "summary": "A comprehensive guide to mastering Java programming.",
+    "imagePath": "src/main/resources/bookCovers/dummy_150x150_000000_ffb2fc.png",
+    "publication": "31 December 2022"
+  }],
+  "users": [
+    {
+      "id": -1,
+      "name": "Emma Watson",
+      "email": "emma.watson@example.com",
+      "phoneNumber": "+1 555-123-4567",
+      "loans": [],
+      "birthday": "15 March 1990"
+    },
+    {
+      "id": -1,
+      "name": "Michael Scott",
+      "email": "michael.scott@dundermifflin.com",
+      "phoneNumber": "212-867-5309",
+      "loans": [],
+      "birthday": "05 October 1975"
+    },
+    {
+      "id": -1,
+      "name": "Ada Lovelace",
+      "email": "ada@analyticalengine.org",
+      "phoneNumber": "+44 20 7123 4567",
+      "loans": [],
+      "birthday": "10 December 1815"
+    },
+    {
+      "id": -1,
+      "name": "Bruce Wayne",
+      "email": "bruce.wayne@wayneenterprises.com",
+      "phoneNumber": "(555) 0199",
+      "loans": [],
+      "birthday": "01 January 1980"
+    }
+  ]
+}
