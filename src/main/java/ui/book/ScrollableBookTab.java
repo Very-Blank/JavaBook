@@ -20,25 +20,24 @@ import javafx.beans.property.*;
 import data.*;
 import ui.*;
 
-
-public class ScrollableBookTab extends ScrollableTab{
+public class ScrollableBookTab extends ScrollableTab {
     private ArrayList<BookBox> bookBoxs;
 
-    public ScrollableBookTab(Assets assets, ArrayList<Book> bookDatas){
-        super(assets, "Books ");
+    public ScrollableBookTab(Assets assets, String name, ArrayList<Book> bookDatas) {
+        super(assets, name);
         updateContents(bookDatas);
     }
 
-    public void updateContents(ArrayList<Book> bookDatas){
+    public void updateContents(ArrayList<Book> bookDatas) {
         this.bookBoxs = new ArrayList<BookBox>(bookDatas.size());
 
-        if(bookDatas.size() != 0){
+        if (bookDatas.size() != 0) {
             TilePane content = new TilePane();
             content.prefWidthProperty().bind(this.scrollPane.widthProperty());
             content.setHgap(7);
             content.setVgap(7);
 
-            for(int i = 0; i < bookDatas.size(); i++){
+            for (int i = 0; i < bookDatas.size(); i++) {
                 BookBox bookBox = new BookBox(bookDatas.get(i), this.assets);
                 bookBoxs.add(bookBox);
 
@@ -60,9 +59,7 @@ public class ScrollableBookTab extends ScrollableTab{
         super.updateContents();
     }
 
-    public ArrayList<BookBox> getBookBoxs(){
+    public ArrayList<BookBox> getBookBoxs() {
         return this.bookBoxs;
     }
 }
-
-

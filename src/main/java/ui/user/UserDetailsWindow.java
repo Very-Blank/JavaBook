@@ -4,18 +4,22 @@ import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import javafx.scene.image.*;
 import javafx.geometry.*;
+import javafx.application.Platform;
 import javafx.event.*;
 import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.Set;
 
 import ui.*;
 import ui.book.BookBox;
+import ui.book.ScrollableBookTab;
 import data.Book;
 import data.User;
 
@@ -33,7 +37,7 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
     private Button save;
     private User user;
 
-    public UserDetailsWindow(User user, Assets assets){
+    public UserDetailsWindow(User user, Assets assets) {
         super(new VBox(), assets, "User Details", "Edit User");
         this.user = user;
         this.name = new TextField(this.user.name());
@@ -43,56 +47,39 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
 
         LabeledField<TextField> name = new LabeledField<TextField>("Name:", this.name, assets);
         LabeledField<TextField> email = new LabeledField<TextField>("Email:", this.email, assets);
-        LabeledField<PhoneNumber> phoneNumber = new LabeledField<PhoneNumber>("Phone Number:", this.phoneNumber, assets);
+        LabeledField<PhoneNumber> phoneNumber = new LabeledField<PhoneNumber>("Phone Number:", this.phoneNumber,
+                assets);
         LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Birthday:", this.datePicker, assets);
 
-        HBox hbox = new HBox(80.0);
+        HBox hbox = new HBox(20.0);
         VBox detailHolder = new VBox(name, email, phoneNumber, datePicker);
         detailHolder.setMaxWidth(250);
         detailHolder.setMinWidth(250);
 
-        ScrollPane loanHolder = new ScrollPane();
-        loanHolder.setFitToWidth(true);
-        loanHolder.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        loanHolder.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
-
-        String css = String.format("""
-            .scroll-pane > .viewport {
-                -fx-background-color: %s;
-            }
-        """, assets.gray1);
-
-        loanHolder.getStylesheets().add("data:text/css," + css);
-        ArrayList<BookBox> bookBoxs = new ArrayList<BookBox>(30);
-        HBox.setHgrow(loanHolder, Priority.ALWAYS);
-
-        if(true){
-            TilePane content = new TilePane();
-            content.prefWidthProperty().bind(loanHolder.widthProperty());
-            content.setHgap(7);
-            content.setVgap(7);
-
-            for(int i = 0; i < 30; i++){
-                BookBox bookBox = new BookBox(new Book(), assets);
-                bookBoxs.add(bookBox);
-
-                content.getChildren().add(bookBox);
-            }
-
-            content.setBackground(assets.background);
-            loanHolder.setContent(content);
-        } else {
-            // TilePane content = new TilePane();
-            // content.prefWidthProperty().bind(this.scrollPane.widthProperty());
-            // content.setHgap(7);
-            // content.setVgap(7);
-            //
-            // content.setBackground(assets.background);
-            // this.scrollPane.setContent(content);
+        ArrayList<Book> books = new ArrayList<Book>(30);
+        for (int i = 0; i < 30; i++) {
+            books.add(new Book());
         }
 
+        TabPane tabBar = new TabPane();
+        HBox.setHgrow(tabBar, Priority.ALWAYS);
+        tabBar.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+        tabBar.setBackground(assets.background);
 
-        hbox.getChildren().addAll(detailHolder, loanHolder);
+        Platform.runLater(() -> {
+            tabBar.lookup(".tab-header-background").setStyle(String.format("-fx-background-color: %s;", assets.gray1));
+
+            Set<Node> tabs = tabBar.lookupAll(".tab");
+
+            for (Node tab : tabs) {
+                tab.setStyle(String.format("-fx-background-color: %s;", assets.gray2));
+            }
+        });
+
+        ScrollableBookTab loanTab = new ScrollableBookTab(assets, "Available Books ", books);
+        tabBar.getTabs().addAll(loanTab);
+
+        hbox.getChildren().addAll(detailHolder, tabBar);
 
         // this.loan = new Button("Add Loan");
         // this.returnBooks = new Button("Return Books");
@@ -103,23 +90,22 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
         super.content.getChildren().addAll(hbox);
     }
 
-
-    public User getUser(){
-        this.user.update(this.name.getText(), this.email.getText(), this.phoneNumber.getPhoneNumber(), this.user.loans(), getDatePickerValue());
+    public User getUser() {
+        this.user.update(this.name.getText(), this.email.getText(), this.phoneNumber.getPhoneNumber(),
+                this.user.loans(), getDatePickerValue());
         return this.user;
     }
 
-    public void setDatePickerValue(LocalDate date){
+    public void setDatePickerValue(LocalDate date) {
         datePicker.setValue(date);
     }
 
-    public LocalDate getDatePickerValue(){
+    public LocalDate getDatePickerValue() {
         return datePicker.getValue();
     }
 
-    public void setDatePickerAction(EventHandler<ActionEvent> action){
+    public void setDatePickerAction(EventHandler<ActionEvent> action) {
         datePicker.setOnAction(action);
     }
 
 }
-

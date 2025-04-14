@@ -59,7 +59,7 @@ public class Main extends Application {
             }
         });
 
-        this.bookTab = new ScrollableBookTab(this.assets, database.getBooks());
+        this.bookTab = new ScrollableBookTab(this.assets, "Books ", database.getBooks());
 
         this.bookTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -81,7 +81,7 @@ public class Main extends Application {
                                 public void handle(ActionEvent s) {
                                     try {
                                         database.deleteBook(newWindow.getBook());
-                                    } catch(Exception e){
+                                    } catch (Exception e) {
                                         System.out.println("failed to delete book");
                                         System.out.println(e.getMessage());
                                     }
@@ -167,7 +167,7 @@ public class Main extends Application {
                                 public void handle(ActionEvent s) {
                                     try {
                                         database.deleteUser(newWindow.getUser());
-                                    } catch(Exception e){
+                                    } catch (Exception e) {
                                         System.out.println("failed to delete user");
                                         System.out.println(e.getMessage());
                                     }
@@ -196,16 +196,15 @@ public class Main extends Application {
             }
         });
 
-
         // this.userTab.setAddAction(new EventHandler<ActionEvent>() {
-        //     public void handle(ActionEvent t) {
-        //         try {
-        //             Stage newWindow = new UserDetailsWindow(assets);
-        //             newWindow.showAndWait();
-        //         } catch (Exception e) {
-        //             System.out.println("failed to open window");
-        //         }
-        //     }
+        // public void handle(ActionEvent t) {
+        // try {
+        // Stage newWindow = new UserDetailsWindow(assets);
+        // newWindow.showAndWait();
+        // } catch (Exception e) {
+        // System.out.println("failed to open window");
+        // }
+        // }
         // });
 
         this.tabBar.getTabs().addAll(this.bookTab, this.userTab);

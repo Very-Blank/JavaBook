@@ -11,16 +11,22 @@ import javafx.geometry.*;
 import javafx.event.*;
 
 import ui.Assets;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import data.*;
 
-public abstract class ScrollableTab extends Tab{
+public abstract class ScrollableTab extends Tab {
     protected ScrollPane scrollPane;
     protected Assets assets;
     protected EventHandler<ActionEvent> updateNotifier;
 
+    private HBox buttonHolder;
+    private HashMap<String, Button> buttonMap;
     private Button add;
 
-    public ScrollableTab(Assets assets, String name){
+    public ScrollableTab(Assets assets, String name) {
         super();
         this.assets = assets;
         this.scrollPane = new ScrollPane();
@@ -36,42 +42,14 @@ public abstract class ScrollableTab extends Tab{
         this.scrollPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
 
         String css = String.format("""
-            .scroll-pane > .viewport {
-                -fx-background-color: %s;
-            }
-        """, assets.gray1);
+                    .scroll-pane > .viewport {
+                        -fx-background-color: %s;
+                    }
+                """, assets.gray1);
 
         scrollPane.getStylesheets().add("data:text/css," + css);
         VBox vbox = new VBox(5);
         vbox.setBackground(assets.background);
-
-        // Pane hSpacer = new Pane();
-        // HBox.setHgrow(hSpacer, Priority.ALWAYS);
-        // hSpacer.setMinSize(10, 1);
-
-        // TextField search = new TextField();
-        // HBox.setMargin(search, new Insets(5, 0, 5, 5));
-        // search.setMinHeight(28);
-        // search.setBackground(assets.elevated);
-        // search.setStyle(String.format("-fx-text-fill: %s;", assets.white1));
-
-        // FuckFxMenuItem test = new FuckFxMenuItem("Something");
-        //
-        // FuckFxMenuButton filter = new FuckFxMenuButton("Filter ", test);
-        // filter.setMenuBackground(new Background(new BackgroundFill(Color.valueOf(assets.gray2), null, null)));
-        // filter.setMenuItemBackground(assets.elevated);
-        // filter.setMenuItemFontColor(assets.textColor);
-        // filter.setMenuItemFont(assets.fonts.normal);
-        //
-        // filter.setBackground(assets.elevated);
-        // filter.setFont(assets.fonts.normal);
-        // filter.setTextFill(assets.textColor);
-        //
-        // filter.setMenuOffset(-5);
-        // filter.setMenuSide(FuckFxSide.RIGHT);
-        //
-        // HBox.setMargin(filter, new Insets(5, 5, 5, 0));
-
 
         Label addLabel = new Label("Add ");
         addLabel.setFont(assets.fonts.normal);
@@ -83,16 +61,23 @@ public abstract class ScrollableTab extends Tab{
         add.setMinHeight(28);
         add.setBackground(assets.elevated);
 
-
         HBox hbox = new HBox(add);
-        // HBox hbox = new HBox(search, add, hSpacer, filter);
         hbox.setBackground(assets.surface);
 
         vbox.getChildren().addAll(hbox, this.scrollPane);
         super.setContent(vbox);
     }
 
-    public void updateContents(){
+    public void addButton(Button button, String name) {
+        buttonHolder.getChildren().add(button);
+        buttonMap.put(name, button);
+    }
+
+    public Button getButton(String name) {
+        return buttonMap.get(name);
+    }
+
+    public void updateContents() {
         this.fire();
     }
 
@@ -107,7 +92,7 @@ public abstract class ScrollableTab extends Tab{
         }
     }
 
-    public void setAddAction(EventHandler<ActionEvent> action){
+    public void setAddAction(EventHandler<ActionEvent> action) {
         add.setOnAction(action);
     }
 
