@@ -21,14 +21,14 @@ import ui.*;
 import data.Book;
 
 public class BookDetailsWindow extends DetailsWindow<VBox>{
-    protected TextField title;
-    protected TextField author;
-    protected TextArea summary;
-    protected DatePicker datePicker;
-    protected Label imagePath;
-    protected Book book;
+    private TextField title;
+    private TextField author;
+    private TextArea summary;
+    private DatePicker datePicker;
+    private Label imagePath;
+    private Book book;
 
-    protected final double textWidth =  450;
+    private final double textWidth =  450;
 
     public BookDetailsWindow(Book book, Assets assets){
         super(new VBox(), assets, "Book Details", "Edit book");
