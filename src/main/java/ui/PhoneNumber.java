@@ -24,8 +24,10 @@ public class PhoneNumber extends HBox{
         super();
         String[] countryCodes = new String[]{"+358", "+1", "+46", "+81", "+82"};
 
+        this.setMaxWidth(250);
         this.selectedCountryCode = countryCodes[0];
         this.countrySelector = new FuckFxMenuButton(countryCodes[0]);
+        this.countrySelector.setMinHeight(28);
 
         this.countrySelector.setMenuBackground(new Background(new BackgroundFill(Color.valueOf(assets.gray2), null, null)));
         this.countrySelector.setMenuItemBackground(assets.elevated);
@@ -47,8 +49,13 @@ public class PhoneNumber extends HBox{
             });
         }
 
-        textField = new TextField();
-        textField.textProperty().addListener(new ChangeListener<String>() {
+        this.textField = new TextField();
+        this.textField.setBackground(assets.surface);
+        this.textField.setStyle(String.format("-fx-text-fill: %s;", assets.white1));
+        this.textField.setMinHeight(29);
+        HBox.setHgrow(this.textField, Priority.ALWAYS);
+
+        this.textField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                 String newValue) {

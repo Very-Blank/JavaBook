@@ -12,6 +12,7 @@ import javafx.event.*;
 
 import java.io.FileInputStream;
 import data.Book;
+import data.Data;
 import ui.Assets;
 
 public class BookBox extends VBox {
@@ -58,19 +59,16 @@ public class BookBox extends VBox {
             this.visual = pane;
         }
 
-        String[] data = this.book.toStringArray();
-
-
-        this.title = createText(data[0], assets);
+        this.title = createText(this.book.title(), assets);
         VBox.setMargin(this.title, new Insets(this.offset/3.0, 0, 0, this.offset/3.0));
 
-        this.author = createText(data[1], assets);
+        this.author = createText(this.book.author(), assets);
         VBox.setMargin(this.author, new Insets(0, 0, 0, this.offset/3.0));
 
-        this.publicationDate = createText(data[2], assets);
+        this.publicationDate = createText(Data.dateToString(this.book.publication()), assets);
         VBox.setMargin(this.publicationDate, new Insets(0, 0, 0, this.offset/3.0));
 
-        this.status = createText(data[3], assets);
+        this.status = createText(this.book.loanToString(), assets);
         VBox.setMargin(this.status, new Insets(0, 0, this.offset/3.0, this.offset/3.0));
 
         VBox box = new VBox(title, author, publicationDate, status);

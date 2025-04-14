@@ -32,7 +32,8 @@
       "id": -1,
       "name": "Emma Watson",
       "email": "emma.watson@example.com",
-      "phoneNumber": "+1 555-123-4567",
+      "phoneNumber": "555-123-4567",
+      "countryCode": "+1",
       "loans": [],
       "birthday": "15 March 1990"
     },
@@ -41,6 +42,7 @@
       "name": "Michael Scott",
       "email": "michael.scott@dundermifflin.com",
       "phoneNumber": "212-867-5309",
+      "countryCode": "+1",
       "loans": [],
       "birthday": "05 October 1975"
     },
@@ -48,7 +50,8 @@
       "id": -1,
       "name": "Ada Lovelace",
       "email": "ada@analyticalengine.org",
-      "phoneNumber": "+44 20 7123 4567",
+      "phoneNumber": "20 7123 4567",
+      "countryCode": "+44",
       "loans": [],
       "birthday": "10 December 1815"
     },
@@ -57,6 +60,7 @@
       "name": "Bruce Wayne",
       "email": "bruce.wayne@wayneenterprises.com",
       "phoneNumber": "(555) 0199",
+      "countryCode": "+44",
       "loans": [],
       "birthday": "01 January 1980"
     }

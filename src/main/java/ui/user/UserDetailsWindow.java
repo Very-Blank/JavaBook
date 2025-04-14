@@ -31,30 +31,30 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
 
     // private VBox fields;
     // private VBox browser;
+    
+    private final double textWidth = 250;
 
-    private Button loan;
-    private Button returnBooks;
-    private Button save;
+    // private Button loan;
+    // private Button returnBooks;
+    // private Button save;
     private User user;
 
     public UserDetailsWindow(User user, Assets assets) {
         super(new VBox(), assets, "User Details", "Edit User");
         this.user = user;
-        this.name = new TextField(this.user.name());
-        this.email = new TextField("EMAIL THIS IS PADDING TO");
+        this.name = this.newTextField(this.user.name(), this.textWidth);
+        this.email = this.newTextField(this.user.email(), this.textWidth);
         this.phoneNumber = new PhoneNumber(assets);
         this.datePicker = new DatePicker(LocalDate.now());
 
-        LabeledField<TextField> name = new LabeledField<TextField>("Name:", this.name, assets);
-        LabeledField<TextField> email = new LabeledField<TextField>("Email:", this.email, assets);
+        LabeledField<TextField> name = new LabeledField<TextField>("Name:", this.name, this.assets);
+        LabeledField<TextField> email = new LabeledField<TextField>("Email:", this.email, this.assets);
         LabeledField<PhoneNumber> phoneNumber = new LabeledField<PhoneNumber>("Phone Number:", this.phoneNumber,
-                assets);
-        LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Birthday:", this.datePicker, assets);
+                this.assets);
+        LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Birthday:", this.datePicker, this.assets);
 
         HBox hbox = new HBox(20.0);
         VBox detailHolder = new VBox(name, email, phoneNumber, datePicker);
-        detailHolder.setMaxWidth(250);
-        detailHolder.setMinWidth(250);
 
         ArrayList<Book> books = new ArrayList<Book>(30);
         for (int i = 0; i < 30; i++) {
@@ -64,20 +64,21 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
         TabPane tabBar = new TabPane();
         HBox.setHgrow(tabBar, Priority.ALWAYS);
         tabBar.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-        tabBar.setBackground(assets.background);
+        tabBar.setBackground(this.assets.background);
 
         Platform.runLater(() -> {
-            tabBar.lookup(".tab-header-background").setStyle(String.format("-fx-background-color: %s;", assets.gray1));
+            tabBar.lookup(".tab-header-background").setStyle(String.format("-fx-background-color: %s;", this.assets.gray1));
 
             Set<Node> tabs = tabBar.lookupAll(".tab");
 
             for (Node tab : tabs) {
-                tab.setStyle(String.format("-fx-background-color: %s;", assets.gray2));
+                tab.setStyle(String.format("-fx-background-color: %s;", this.assets.gray2));
             }
         });
 
-        ScrollableBookTab loanTab = new ScrollableBookTab(assets, "Available Books ", books);
-        tabBar.getTabs().addAll(loanTab);
+        ScrollableBookTab loanTab = new ScrollableBookTab(this.assets, "Available Books ", books);
+        ScrollableBookTab returnLoanTab = new ScrollableBookTab(this.assets, "Loaned Books ", books);
+        tabBar.getTabs().addAll(loanTab, returnLoanTab);
 
         hbox.getChildren().addAll(detailHolder, tabBar);
 
