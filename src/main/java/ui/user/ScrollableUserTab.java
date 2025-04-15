@@ -34,7 +34,6 @@ public class ScrollableUserTab extends ScrollableTab{
 
         if(userDatas.size() != 0){
             VBox content = new VBox(7.0);
-            content.prefWidthProperty().bind(this.scrollPane.widthProperty());
 
             for(int i = 0; i < userDatas.size(); i++){
                 UserBox userBox = new UserBox(userDatas.get(i), this.assets);
@@ -44,16 +43,13 @@ public class ScrollableUserTab extends ScrollableTab{
             }
 
             content.setBackground(assets.background);
-            scrollPane.setContent(content);
+            this.scrollPane.setContent(content);
         } else{
             VBox content = new VBox(7.0);
-            content.prefWidthProperty().bind(this.scrollPane.widthProperty());
 
             content.setBackground(assets.background);
-            scrollPane.setContent(content);
+            this.scrollPane.setContent(content);
         }
-
-        super.updateContents();
     }
 
     public ArrayList<UserBox> getUserBoxs(){

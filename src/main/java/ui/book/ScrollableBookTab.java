@@ -33,7 +33,6 @@ public class ScrollableBookTab extends ScrollableTab {
 
         if (bookDatas.size() != 0) {
             TilePane content = new TilePane();
-            content.prefWidthProperty().bind(this.scrollPane.widthProperty());
             content.setHgap(7);
             content.setVgap(7);
 
@@ -48,15 +47,12 @@ public class ScrollableBookTab extends ScrollableTab {
             this.scrollPane.setContent(content);
         } else {
             TilePane content = new TilePane();
-            content.prefWidthProperty().bind(this.scrollPane.widthProperty());
             content.setHgap(7);
             content.setVgap(7);
 
             content.setBackground(this.assets.background);
             this.scrollPane.setContent(content);
         }
-
-        super.updateContents();
     }
 
     public ArrayList<BookBox> getBookBoxs() {

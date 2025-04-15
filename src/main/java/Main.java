@@ -40,6 +40,8 @@ public class Main extends Application {
         this.database = new Database();
         this.assets = new Assets();
         this.topControlls = new TopControlls(this.assets);
+        this.userTab = new ScrollableUserTab(this.assets, database.getUsers());
+        this.bookTab = new ScrollableBookTab(this.assets, "Books ", database.getBooks());
 
         this.topControlls.quitItem.setOnAction((_) -> {
             primaryStage.close();
@@ -59,7 +61,6 @@ public class Main extends Application {
             }
         });
 
-        this.bookTab = new ScrollableBookTab(this.assets, "Books ", database.getBooks());
         this.bookTab.addButton("Add ", "add");
 
         this.bookTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
@@ -96,9 +97,8 @@ public class Main extends Application {
                             newWindow.setSaveAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
                                     database.updateBook(newWindow.getBook());
-                                    newWindow.close();
-
                                     bookTab.updateContents(database.getBooks());
+                                    newWindow.close();
                                 }
                             });
 
@@ -128,9 +128,10 @@ public class Main extends Application {
                     newWindow.setSaveAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent s) {
                             database.addBook(newWindow.getBook());
-                            newWindow.close();
 
                             bookTab.updateContents(database.getBooks());
+                            tabBar.requestLayout();
+                            newWindow.close();
                         }
                     });
 
@@ -142,8 +143,6 @@ public class Main extends Application {
                 }
             }
         }, "add");
-
-        this.userTab = new ScrollableUserTab(this.assets, database.getUsers());
 
         this.userTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -195,16 +194,40 @@ public class Main extends Application {
             }
         });
 
-        // this.userTab.setAddAction(new EventHandler<ActionEvent>() {
-        // public void handle(ActionEvent t) {
-        // try {
-        // Stage newWindow = new UserDetailsWindow(assets);
-        // newWindow.showAndWait();
-        // } catch (Exception e) {
-        // System.out.println("failed to open window");
-        // }
-        // }
-        // });
+
+        this.userTab.addButton("Add ", "add");
+        this.userTab.setButtonAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                try {
+                    User user = new User();
+
+                    UserDetailsWindow newWindow = new UserDetailsWindow(user, assets);
+
+                    newWindow.setBackAction(new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent s) {
+                            newWindow.close();
+                        }
+                    });
+
+                    newWindow.setSaveAction(new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent s) {
+                            database.addUser(newWindow.getUser());
+
+                            userTab.updateContents(database.getUsers());
+                            tabBar.requestLayout();
+                            newWindow.close();
+                        }
+                    });
+
+                    newWindow.showAndWait();
+
+                } catch (Exception e) {
+                    System.out.println("failed to open window");
+                    System.out.println(e.getMessage());
+                }
+            }
+        }, "add");
+
 
         this.tabBar.getTabs().addAll(this.bookTab, this.userTab);
 

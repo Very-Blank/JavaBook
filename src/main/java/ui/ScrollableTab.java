@@ -37,6 +37,7 @@ public abstract class ScrollableTab extends Tab {
         vbox.setBackground(this.assets.background);
 
         vbox.getChildren().addAll(this.buttonHolder, this.scrollPane);
+
         super.setContent(vbox);
     }
 
@@ -50,6 +51,8 @@ public abstract class ScrollableTab extends Tab {
 
     private void setScrollPaneSyling(ScrollPane scrollPane, Assets assets){
         scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.autosize();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
