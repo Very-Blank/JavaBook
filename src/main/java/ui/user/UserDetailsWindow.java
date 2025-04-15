@@ -21,6 +21,7 @@ import ui.*;
 import ui.book.BookBox;
 import ui.book.ScrollableBookTab;
 import data.Book;
+import data.Loan;
 import data.User;
 
 public class UserDetailsWindow extends DetailsWindow<VBox> {
@@ -74,6 +75,38 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
 
         ScrollableBookTab loanTab = new ScrollableBookTab(this.assets, "Available Books ", availableBooks);
         ScrollableBookTab returnLoanTab = new ScrollableBookTab(this.assets, "Loaned Books ", loanedBooks);
+
+        loanTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                ArrayList<BookBox> bookBoxs = loanTab.getBookBoxs();
+                for (int i = 0; i < bookBoxs.size(); i++) {
+                    BookBox bookbox = bookBoxs.get(i);
+                    bookbox.setOnMouseClicked((_) -> {
+                        availableBooks.remove(bookbox.getBook());
+                        loanedBooks.add(bookbox.getBook());
+                        returnLoanTab.updateContents(loanedBooks);
+                        loanTab.updateContents(availableBooks);
+                    });
+                }
+            }
+        });
+
+        returnLoanTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                ArrayList<BookBox> bookBoxs = returnLoanTab.getBookBoxs();
+                for (int i = 0; i < bookBoxs.size(); i++) {
+                    BookBox bookbox = bookBoxs.get(i);
+                    bookbox.setOnMouseClicked((_) -> {
+                        loanedBooks.remove(bookbox.getBook());
+                        availableBooks.add(bookbox.getBook());
+                        returnLoanTab.updateContents(loanedBooks);
+                        loanTab.updateContents(availableBooks);
+                    });
+                }
+            }
+        });
+
+
         tabBar.getTabs().addAll(loanTab, returnLoanTab);
         // tabBar.requestLayout();
 
@@ -83,6 +116,12 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
     }
 
     public User getUser() {
+        ArrayList<Loan> loans = new ArrayList<Loan>(this.loanedBooks.size());
+        for (int i = 0; i < this.loanedBooks.size(); i++) {
+            Loan loan = new Loan(-1, this.loanedBooks.get(i).getID(), this.user.getID(), LocalDate.now());
+            loans.add(loan);
+        }
+
         this.user.update(this.name.getText(), this.email.getText(), this.phoneNumber.getCountryCode(),
                 this.phoneNumber.getPhoneNumber(),
                 this.user.loans(), getDatePickerValue());
