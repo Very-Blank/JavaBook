@@ -34,10 +34,6 @@ public abstract class Data<T extends Data<T>>{
     // Creates a deep copy of data
     public abstract T copy();
 
-    // Converts all meaningful data to a string array
-    public abstract String[] toStringArray();
-
-
     public int getID(){
         return this.ID;
     }

@@ -44,7 +44,7 @@ public class ScrollableBookTab extends ScrollableTab {
                 content.getChildren().add(bookBox);
             }
 
-            content.setBackground(assets.background);
+            content.setBackground(this.assets.background);
             this.scrollPane.setContent(content);
         } else {
             TilePane content = new TilePane();
@@ -52,7 +52,7 @@ public class ScrollableBookTab extends ScrollableTab {
             content.setHgap(7);
             content.setVgap(7);
 
-            content.setBackground(assets.background);
+            content.setBackground(this.assets.background);
             this.scrollPane.setContent(content);
         }
 

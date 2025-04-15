@@ -27,6 +27,14 @@ public class TopControlls extends HBox{
         this.quitItem = new FuckFxMenuItem("Quit ");
 
         FuckFxMenuButton menu = new FuckFxMenuButton("Options ", this.openItem, this.newItem, this.quitItem);
+        this.setMenuStyling(menu, assets);
+
+        HBox.setMargin(menu, new Insets(5, 0, 5, 5));
+
+        super.getChildren().addAll(menu);
+    }
+
+    private void setMenuStyling(FuckFxMenuButton menu, Assets assets){
         menu.setMenuBackground(new Background(new BackgroundFill(Color.valueOf(assets.gray2), null, null)));
         menu.setMenuItemBackground(assets.elevated);
         menu.setMenuItemFontColor(assets.textColor);
@@ -35,24 +43,5 @@ public class TopControlls extends HBox{
         menu.setBackground(assets.elevated);
         menu.setFont(assets.fonts.normal);
         menu.setTextFill(assets.textColor);
-
-        HBox.setMargin(menu, new Insets(5, 0, 5, 5));
-
-        super.getChildren().addAll(menu);
-    }
-
-    public Label createLabelWidth(String name, Assets assets){
-        Label label = new Label(name);
-        label.setFont(assets.fonts.normal);
-        label.setTextFill(assets.textColor);
-        label.setMinWidth(150);
-        return label;
-    }
-
-    public Label createLabel(String name, Assets assets){
-        Label label = new Label(name);
-        label.setFont(assets.fonts.normal);
-        label.setTextFill(assets.textColor);
-        return label;
     }
 }

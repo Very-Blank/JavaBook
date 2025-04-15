@@ -9,29 +9,30 @@ public class User extends Data<User> {
     private String name;
     private String email;
     private String phoneNumber;
+    private String countryCode;
+
     private ArrayList<Integer> loans;
     private LocalDate birthday;
 
     public User() {
         super(-1);
-        this.name = "default";
-        this.email = "default";
-        this.phoneNumber = "default";
+        this.name = "";
+        this.email = "";
+        this.phoneNumber = "";
+        this.countryCode = "+358";
         this.loans = new ArrayList<Integer>();
         this.birthday = LocalDate.now();
     }
 
-    public User(int ID, String name, String email, String phoneNumber, ArrayList<Integer> loans, LocalDate birthday) {
+    public User(int ID, String name, String email, String countryCode, String phoneNumber, ArrayList<Integer> loans,
+            LocalDate birthday) {
         super(ID);
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.countryCode = countryCode;
         this.loans = loans;
         this.birthday = birthday;
-    }
-
-    public String[] toStringArray() {
-        return new String[] { this.name, this.email, this.phoneNumber, Data.dateToString(this.birthday) };
     }
 
     public void fromJsonObject(JSONObject json) {
@@ -39,6 +40,7 @@ public class User extends Data<User> {
         this.name = json.getString("name");
         this.email = json.getString("email");
         this.phoneNumber = json.getString("phoneNumber");
+        this.countryCode = json.getString("countryCode");
         this.birthday = Data.stringToDate(json.getString("birthday"));
         JSONArray array = json.getJSONArray("loans");
         ArrayList<Integer> newList = new ArrayList<Integer>(array.length());
@@ -53,6 +55,8 @@ public class User extends Data<User> {
         object.put("id", this.getID());
         object.put("name", this.name);
         object.put("email", this.email);
+        object.put("phoneNumber", this.phoneNumber);
+        object.put("countryCode", this.countryCode);
         object.put("loans", this.loans);
         object.put("birthday", Data.dateToString(this.birthday));
 
@@ -64,34 +68,41 @@ public class User extends Data<User> {
         for (int i = 0; i < newList.size(); i++) {
             newList.add(this.loans.get(i));
         }
-        return new User(this.getID(), this.name, this.email, this.phoneNumber, newList, this.birthday);
+        return new User(this.getID(), this.name, this.email, this.phoneNumber, this.countryCode, newList,
+                this.birthday);
     }
 
-    public void update(String name, String email, String phoneNumber, ArrayList<Integer> loans, LocalDate birthday){
+    public void update(String name, String email, String countryCode, String phoneNumber, ArrayList<Integer> loans,
+            LocalDate birthday) {
         this.name = name;
         this.email = email;
+        this.countryCode = countryCode;
         this.phoneNumber = phoneNumber;
         this.loans = loans;
         this.birthday = birthday;
     }
 
-    public String name(){
+    public String name() {
         return this.name;
     }
 
-    public String email(){
+    public String email() {
         return this.email;
     }
 
-    public String phoneNumber(){
+    public String phoneNumber() {
         return this.phoneNumber;
     }
 
-    public ArrayList<Integer> loans(){
+    public String countryCode() {
+        return this.countryCode;
+    }
+
+    public ArrayList<Integer> loans() {
         return this.loans;
     }
 
-    public LocalDate birthday(){
+    public LocalDate birthday() {
         return this.birthday;
     }
 }

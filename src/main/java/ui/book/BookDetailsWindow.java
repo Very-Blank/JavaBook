@@ -28,16 +28,16 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
     private Label imagePath;
     private Book book;
 
-    private final double textWidth =  450;
+    private final double textWidth = 450;
 
     public BookDetailsWindow(Book book, Assets assets){
         super(new VBox(), assets, "Book Details", "Edit book");
         this.book = book;
 
-        this.title = newTextField(this.book.title(), assets);
+        this.title = newTextField(this.book.title(), this.textWidth);
         LabeledField<TextField> title = new LabeledField<TextField>("Title:", this.title, assets);
 
-        this.author = newTextField(this.book.author(), assets);
+        this.author = newTextField(this.book.author(), this.textWidth);
         LabeledField<TextField> author = new LabeledField<TextField>("Author:", this.author, assets);
 
         this.summary = new TextArea(this.book.summary());
@@ -95,15 +95,6 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
     public Book getBook(){
         this.book.update(this.title.getText(), this.author.getText(), this.summary.getText(), this.imagePath.getText(), getDatePickerValue());
         return this.book;
-    }
-
-    private TextField newTextField(String string, Assets assets){
-        TextField textField = new TextField(string);
-        textField.setBackground(assets.surface);
-        textField.setStyle(String.format("-fx-text-fill: %s;", assets.white1));
-        textField.setMinWidth(this.textWidth);
-        textField.setMaxWidth(this.textWidth);
-        return textField;
     }
 
     public void setDatePickerValue(LocalDate date){

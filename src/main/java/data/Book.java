@@ -62,18 +62,12 @@ public class Book extends Data<Book> {
         return object;
     }
 
-    public String[] toStringArray() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
-        String date = this.publication.format(formatter);
-
-        String loan;
+    public String loanToString(){
         if (this.loan >= 0) {
-            loan = "Loaned";
+            return "Loaned";
         } else {
-            loan = "Available";
+            return "Available";
         }
-
-        return new String[] { this.title, this.author, date, loan };
     }
 
     public void update(String title, String author, String summary, String imagePath, LocalDate publication) {

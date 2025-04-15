@@ -20,14 +20,23 @@ public class PhoneNumber extends HBox {
     private String selectedCountryCode;
     private TextField textField;
 
-    public PhoneNumber(String phoneNumber, String countryCode, Assets assets) {
+    public PhoneNumber(String countryCode, String phoneNumber, Assets assets) {
         super();
         String[] countryCodes = new String[] { "+358", "+1", "+46", "+81", "+82" };
         this.textField = new TextField();
         this.selectedCountryCode = countryCode;
         this.countrySelector = new FuckFxMenuButton(countryCode);
 
-        this.textField.setText(phoneNumber);
+        this.setMaxWidth(250);
+
+        this.countrySelector.setMinHeight(28);
+
+        this.textField.setMinHeight(29);
+
+        this.textField.setText(phoneNumber.replaceAll("[^\\d]", ""));
+        this.textField.setBackground(assets.surface);
+        this.textField.setStyle(String.format("-fx-text-fill: %s;", assets.white1));
+        HBox.setHgrow(this.textField, Priority.ALWAYS);
 
         this.countrySelector
                 .setMenuBackground(new Background(new BackgroundFill(Color.valueOf(assets.gray2), null, null)));
@@ -63,7 +72,11 @@ public class PhoneNumber extends HBox {
         super.getChildren().addAll(countrySelector, textField);
     }
 
+    public String getCountryCode() {
+        return this.selectedCountryCode;
+    }
+
     public String getPhoneNumber() {
-        return this.selectedCountryCode + " " + textField.getText();
+        return this.textField.getText();
     }
 }

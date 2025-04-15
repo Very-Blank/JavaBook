@@ -25,7 +25,7 @@ public class FuckFxFinalMenuItem extends HBox{
 
         this.setAlignment(Pos.CENTER_LEFT);
 
-        this.setOnMouseClicked((event) -> {
+        this.setOnMouseClicked((_) -> {
             this.menuItem.fire();
         });
 

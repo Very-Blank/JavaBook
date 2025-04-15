@@ -41,7 +41,7 @@ public class Main extends Application {
         this.assets = new Assets();
         this.topControlls = new TopControlls(this.assets);
 
-        this.topControlls.quitItem.setOnAction((event) -> {
+        this.topControlls.quitItem.setOnAction((_) -> {
             primaryStage.close();
         });
 
@@ -60,16 +60,18 @@ public class Main extends Application {
         });
 
         this.bookTab = new ScrollableBookTab(this.assets, "Books ", database.getBooks());
+        this.bookTab.addButton("Add ", "add");
 
         this.bookTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 ArrayList<BookBox> bookBoxs = bookTab.getBookBoxs();
                 for (int i = 0; i < bookBoxs.size(); i++) {
                     BookBox bookbox = bookBoxs.get(i);
-                    bookbox.setOnMouseClicked((event) -> {
+                    bookbox.setOnMouseClicked((_) -> {
                         try {
                             Book book = bookbox.getBook();
                             BookDetailsWindow newWindow = new BookDetailsWindow(book, assets);
+                            newWindow.addButton("Delete 󰆴", "delete");
 
                             newWindow.setBackAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
@@ -77,7 +79,7 @@ public class Main extends Application {
                                 }
                             });
 
-                            newWindow.setDeleteAction(new EventHandler<ActionEvent>() {
+                            newWindow.setButtonAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
                                     try {
                                         database.deleteBook(newWindow.getBook());
@@ -89,7 +91,7 @@ public class Main extends Application {
                                     bookTab.updateContents(database.getBooks());
                                     newWindow.close();
                                 }
-                            });
+                            }, "delete");
 
                             newWindow.setSaveAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
@@ -103,13 +105,14 @@ public class Main extends Application {
                             newWindow.showAndWait();
                         } catch (Exception e) {
                             System.out.println("failed to open window");
+                            System.out.println(e.getMessage());
                         }
                     });
                 }
             }
         });
 
-        this.bookTab.setAddAction(new EventHandler<ActionEvent>() {
+        this.bookTab.setButtonAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 try {
                     Book book = new Book();
@@ -117,12 +120,6 @@ public class Main extends Application {
                     BookDetailsWindow newWindow = new BookDetailsWindow(book, assets);
 
                     newWindow.setBackAction(new EventHandler<ActionEvent>() {
-                        public void handle(ActionEvent s) {
-                            newWindow.close();
-                        }
-                    });
-
-                    newWindow.setDeleteAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent s) {
                             newWindow.close();
                         }
@@ -141,9 +138,10 @@ public class Main extends Application {
 
                 } catch (Exception e) {
                     System.out.println("failed to open window");
+                    System.out.println(e.getMessage());
                 }
             }
-        });
+        }, "add");
 
         this.userTab = new ScrollableUserTab(this.assets, database.getUsers());
 
@@ -156,6 +154,7 @@ public class Main extends Application {
                         try {
                             User user = userBox.getUser();
                             UserDetailsWindow newWindow = new UserDetailsWindow(user, assets);
+                            newWindow.addButton("Delete 󰆴", "delete");
 
                             newWindow.setBackAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
@@ -163,7 +162,7 @@ public class Main extends Application {
                                 }
                             });
 
-                            newWindow.setDeleteAction(new EventHandler<ActionEvent>() {
+                            newWindow.setButtonAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
                                     try {
                                         database.deleteUser(newWindow.getUser());
@@ -175,7 +174,7 @@ public class Main extends Application {
                                     userTab.updateContents(database.getUsers());
                                     newWindow.close();
                                 }
-                            });
+                            }, "delete");
 
                             newWindow.setSaveAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {

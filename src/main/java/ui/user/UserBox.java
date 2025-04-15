@@ -11,6 +11,7 @@ import javafx.geometry.*;
 import javafx.event.*;
 
 import ui.*;
+import data.Data;
 import data.User;
 
 public class UserBox extends HBox {
@@ -24,9 +25,7 @@ public class UserBox extends HBox {
         this.setPrefHeight(50);
         this.setAlignment(Pos.CENTER_LEFT);
 
-        String string[] = user.toStringArray();
-
-        this.getChildren().addAll(fieldStart("Full Name", string[0], assets), field("Email", string[1], assets), field("PhoneNumber", string[2], assets), field("Birthday", string[3], assets));
+        this.getChildren().addAll(fieldStart("Full Name", this.user.name(), assets), field("Email", this.user.email(), assets), field("PhoneNumber", this.user.countryCode() + " " + this.user.phoneNumber(), assets), field("Birthday", Data.dateToString(this.user.birthday()), assets));
         this.setBackground(assets.surface);
     }
 
