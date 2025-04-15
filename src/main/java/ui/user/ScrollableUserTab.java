@@ -50,6 +50,8 @@ public class ScrollableUserTab extends ScrollableTab{
             content.setBackground(assets.background);
             this.scrollPane.setContent(content);
         }
+
+        super.updateContents();
     }
 
     public ArrayList<UserBox> getUserBoxs(){

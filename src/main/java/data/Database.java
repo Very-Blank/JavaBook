@@ -41,6 +41,15 @@ public class Database {
                 this.addUser(newUser);
             }
 
+            JSONArray loans = jsonObject.getJSONArray("loans");
+
+            for (int i = 0; i < loans.length(); i++) {
+                JSONObject loan = loans.getJSONObject(i);
+                Loan newLoan = new Loan();
+                newLoan.fromJsonObject(loan);
+                this.addLoan(newLoan);
+            }
+
         } catch (Exception e) {
             System.err.println("Error reading file: " + e.getMessage());
         }
@@ -51,6 +60,7 @@ public class Database {
     }
 
     public void deleteBook(Book book) throws DataException {
+        // FIXME: DELETE LOANS
         this.books.removeValueAt(book);
     }
 
@@ -65,11 +75,21 @@ public class Database {
     }
 
     public Book getBook(int ID) throws DataException {
-        try {
-            return books.get(ID).copy();
-        } catch (DataException e) {
-            throw e;
+        return books.get(ID).copy();
+    }
+
+    public ArrayList<Book> getAvailableBooks() throws DataException {
+        ArrayList<Book> books = getBooks();
+        int i = 0;
+        while (i < books.size()) {
+            if (books.get(i).loan() >= 0) {
+                books.remove(i);
+            } else{
+                i++;
+            }
         }
+
+        return books;
     }
 
     // FIXME: ADD ID CHECKING HERE AND VALIDATION
@@ -77,12 +97,37 @@ public class Database {
         return books.setValueAt(book);
     }
 
+    // Returns null if loan is invalid
+    public String getLoanerName(Book book){
+        try {
+            Loan loan = this.getLoan(book.loan());
+            return this.getUser(loan.userID()).name();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public int addUser(User user) {
         return this.users.setValueAt(user);
     }
 
     public void deleteUser(User user) throws DataException {
+        // FIXME: DELETE LOANS
         this.users.removeValueAt(user);
+    }
+
+    // User might be a copy with wrong data!
+    // So we get the orginal!
+    public ArrayList<Book> getUserLoanedBooks(User userCopy) throws DataException {
+        User user = users.get(userCopy.getID());
+        ArrayList<Integer> loans = user.loans();
+
+        ArrayList<Book> books = new ArrayList<Book>(loans.size());
+        for (int i = 0; i < loans.size(); i++) {
+            books.add(this.books.get(this.loans.get(loans.get(i)).bookID()).copy());
+        }
+
+        return books;
     }
 
     public ArrayList<User> getUsers() {
@@ -96,15 +141,23 @@ public class Database {
     }
 
     public User getUser(int ID) throws DataException {
-        try {
-            return users.get(ID).copy();
-        } catch (DataException e) {
-            throw e;
-        }
+        return this.users.get(ID).copy();
     }
 
     // FIXME: ADD ID CHECKING HERE AND VALIDATION
     public int updateUser(User user) {
-        return users.setValueAt(user);
+        return this.users.setValueAt(user);
+    }
+
+    public int addLoan(Loan loan) {
+        return this.loans.setValueAt(loan);
+    }
+
+    public Loan getLoan(int ID) throws DataException {
+        return this.loans.get(ID).copy();
+    }
+
+    public void deleteLoan(Loan loan) throws DataException {
+        this.loans.removeValueAt(loan);
     }
 }

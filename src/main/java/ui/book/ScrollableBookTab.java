@@ -53,6 +53,8 @@ public class ScrollableBookTab extends ScrollableTab {
             content.setBackground(this.assets.background);
             this.scrollPane.setContent(content);
         }
+
+        super.updateContents();
     }
 
     public ArrayList<BookBox> getBookBoxs() {

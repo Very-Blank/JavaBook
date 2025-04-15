@@ -39,7 +39,6 @@ public class DetailsWindow<T extends Pane> extends Stage {
 
         VBox.setMargin(this.content, new Insets(0, this.edgeSpace, 0, this.edgeSpace));
 
-
         this.dialogue.getChildren().addAll(this.backButton, new Spacer(true, false), this.saveButton);
         VBox.setMargin(this.dialogue, new Insets(0, this.edgeSpace, this.edgeSpace, this.edgeSpace));
 

@@ -78,6 +78,10 @@ public class Book extends Data<Book> {
         this.publication = publication;
     }
 
+    public int loan(){
+        return this.loan;
+    }
+
     public String title() {
         return this.title;
     }

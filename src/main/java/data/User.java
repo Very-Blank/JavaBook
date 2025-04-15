@@ -48,6 +48,8 @@ public class User extends Data<User> {
         for (int i = 0; i < array.length(); i++) {
             newList.add(array.getInt(i));
         }
+
+        this.loans = newList;
     }
 
     public JSONObject toJson() {
@@ -65,9 +67,10 @@ public class User extends Data<User> {
 
     public User copy() {
         ArrayList<Integer> newList = new ArrayList<Integer>(this.loans.size());
-        for (int i = 0; i < newList.size(); i++) {
+        for (int i = 0; i < this.loans.size(); i++) {
             newList.add(this.loans.get(i));
         }
+
         return new User(this.getID(), this.name, this.email, this.phoneNumber, this.countryCode, newList,
                 this.birthday);
     }

@@ -29,19 +29,19 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
     private TextField email;
     private PhoneNumber phoneNumber;
 
-    // private VBox fields;
-    // private VBox browser;
+    private ArrayList<Book> availableBooks;
+    private ArrayList<Book> loanedBooks;
 
     private final double textWidth = 250;
-
-    // private Button loan;
-    // private Button returnBooks;
-    // private Button save;
     private User user;
 
-    public UserDetailsWindow(User user, Assets assets) {
+    public UserDetailsWindow(User user, ArrayList<Book> availableBooks, ArrayList<Book> loanedBooks, Assets assets) {
         super(new VBox(), assets, "User Details", "Edit User");
         this.user = user;
+
+        this.availableBooks = availableBooks;
+        this.loanedBooks = availableBooks;
+
         this.name = this.newTextField(this.user.name(), this.textWidth);
         this.email = this.newTextField(this.user.email(), this.textWidth);
         this.phoneNumber = new PhoneNumber(this.user.countryCode(), this.user.phoneNumber(), assets);
@@ -55,11 +55,6 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
 
         HBox hbox = new HBox(20.0);
         VBox detailHolder = new VBox(name, email, phoneNumber, datePicker);
-
-        ArrayList<Book> books = new ArrayList<Book>(30);
-        for (int i = 0; i < 30; i++) {
-            books.add(new Book());
-        }
 
         TabPane tabBar = new TabPane();
         HBox.setHgrow(tabBar, Priority.ALWAYS);
@@ -77,17 +72,12 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
             }
         });
 
-        ScrollableBookTab loanTab = new ScrollableBookTab(this.assets, "Available Books ", books);
-        ScrollableBookTab returnLoanTab = new ScrollableBookTab(this.assets, "Loaned Books ", books);
+        ScrollableBookTab loanTab = new ScrollableBookTab(this.assets, "Available Books ", availableBooks);
+        ScrollableBookTab returnLoanTab = new ScrollableBookTab(this.assets, "Loaned Books ", loanedBooks);
         tabBar.getTabs().addAll(loanTab, returnLoanTab);
+        // tabBar.requestLayout();
 
         hbox.getChildren().addAll(detailHolder, tabBar);
-
-        // this.loan = new Button("Add Loan");
-        // this.returnBooks = new Button("Return Books");
-        // this.save = new Button("Save");
-
-        // HBox buttons = new HBox(this.loan, this.returnBooks);
 
         super.content.getChildren().addAll(hbox);
     }

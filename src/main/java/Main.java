@@ -71,7 +71,9 @@ public class Main extends Application {
                     bookbox.setOnMouseClicked((_) -> {
                         try {
                             Book book = bookbox.getBook();
-                            BookDetailsWindow newWindow = new BookDetailsWindow(book, assets);
+                            String loanedBy = database.getLoanerName(book);
+
+                            BookDetailsWindow newWindow = new BookDetailsWindow(book, loanedBy, assets);
                             newWindow.addButton("Delete 󰆴", "delete");
 
                             newWindow.setBackAction(new EventHandler<ActionEvent>() {
@@ -117,7 +119,7 @@ public class Main extends Application {
                 try {
                     Book book = new Book();
 
-                    BookDetailsWindow newWindow = new BookDetailsWindow(book, assets);
+                    BookDetailsWindow newWindow = new BookDetailsWindow(book, null, assets);
 
                     newWindow.setBackAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent s) {
@@ -152,7 +154,7 @@ public class Main extends Application {
                     userBox.setOnMouseClicked((_) -> {
                         try {
                             User user = userBox.getUser();
-                            UserDetailsWindow newWindow = new UserDetailsWindow(user, assets);
+                            UserDetailsWindow newWindow = new UserDetailsWindow(user, database.getAvailableBooks(), database.getUserLoanedBooks(user), assets);
                             newWindow.addButton("Delete 󰆴", "delete");
 
                             newWindow.setBackAction(new EventHandler<ActionEvent>() {
@@ -201,7 +203,7 @@ public class Main extends Application {
                 try {
                     User user = new User();
 
-                    UserDetailsWindow newWindow = new UserDetailsWindow(user, assets);
+                    UserDetailsWindow newWindow = new UserDetailsWindow(user, database.getAvailableBooks(), new ArrayList<Book>(), assets);
 
                     newWindow.setBackAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent s) {

@@ -30,9 +30,12 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
 
     private final double textWidth = 450;
 
-    public BookDetailsWindow(Book book, Assets assets){
+    public BookDetailsWindow(Book book, String loanedBy, Assets assets){
         super(new VBox(), assets, "Book Details", "Edit book");
         this.book = book;
+        this.imagePath = new Label(book.imagePath());
+        this.summary = new TextArea(this.book.summary());
+        this.datePicker = new DatePicker();
 
         this.title = newTextField(this.book.title(), this.textWidth);
         LabeledField<TextField> title = new LabeledField<TextField>("Title:", this.title, assets);
@@ -40,7 +43,6 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
         this.author = newTextField(this.book.author(), this.textWidth);
         LabeledField<TextField> author = new LabeledField<TextField>("Author:", this.author, assets);
 
-        this.summary = new TextArea(this.book.summary());
         this.summary.setMinWidth(this.textWidth);
         this.summary.setMaxWidth(this.textWidth);
         this.summary.setStyle(String.format("""
@@ -56,26 +58,13 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
 
         LabeledField<TextArea> summary = new LabeledField<TextArea>("Summary:", this.summary, assets);
 
-        this.datePicker = new DatePicker();
-
         this.datePicker.setValue(book.publication());
         LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Publication Date:", this.datePicker, assets);
 
-        this.imagePath = new Label(book.imagePath());
-        this.imagePath.setMinHeight(25);
-        this.imagePath.setTextFill(assets.textColor);
-        this.imagePath.setMinWidth(this.textWidth);
-        this.imagePath.setMaxWidth(this.textWidth);
-        HBox.setMargin(this.imagePath, new Insets(0, 0, 0, 8));
-        HBox hbox = new HBox(this.imagePath);
-        hbox.setBackground(assets.surface);
-        hbox.setMinWidth(this.textWidth);
-        hbox.setMaxWidth(this.textWidth);
+
+        LabeledField<HBox> path = new LabeledField<HBox>("ImagePath:", createLabelField(this.imagePath), assets);
 
         Stage window = this;
-
-        LabeledField<HBox> path = new LabeledField<HBox>("ImagePath:", hbox, assets);
-
         setImagePathAction(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent t) {
                 FileChooser fileChooser = new FileChooser();
@@ -88,8 +77,24 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
             }
         });
 
-
         this.content.getChildren().addAll(title, author, summary, datePicker, path);
+        if(loanedBy != null){ 
+            this.content.getChildren().add(new LabeledField<HBox>("Loaned by:", createLabelField(new Label(loanedBy)), assets));
+        }
+    }
+
+    private HBox createLabelField(Label label){
+        label.setMinHeight(25);
+        label.setTextFill(this.assets.textColor);
+        label.setMinWidth(this.textWidth);
+        label.setMaxWidth(this.textWidth);
+        HBox.setMargin(label, new Insets(0, 0, 0, 8));
+        HBox hbox = new HBox(label);
+        hbox.setBackground(this.assets.surface);
+        hbox.setMinWidth(this.textWidth);
+        hbox.setMaxWidth(this.textWidth);
+
+        return hbox;
     }
 
     public Book getBook(){

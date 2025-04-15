@@ -1,7 +1,7 @@
 {
   "books":[
   {
-    "id": -1,
+    "id": 0,
     "loan": -1,
     "title": "The Great Adventure",
     "author": "John Doe",
@@ -10,8 +10,8 @@
     "publication": "15 March 2020"
   },
   {
-    "id": -1,
-    "loan": -1,
+    "id": 1,
+    "loan": 0,
     "title": "Mystery of the Night",
     "author": "Jane Smith",
     "summary": "A thrilling tale of secrets uncovered under the cover of darkness.",
@@ -19,7 +19,7 @@
     "publication": "05 April 2019"
   },
   {
-    "id": -1,
+    "id": 2,
     "loan": -1,
     "title": "Learning Java",
     "author": "Alice Brown",
@@ -29,16 +29,16 @@
   }],
   "users": [
     {
-      "id": -1,
+      "id": 0,
       "name": "Emma Watson",
       "email": "emma.watson@example.com",
       "phoneNumber": "5551234567",
       "countryCode": "+1",
-      "loans": [],
+      "loans": [0],
       "birthday": "15 March 1990"
     },
     {
-      "id": -1,
+      "id": 1,
       "name": "Michael Scott",
       "email": "michael.scott@dundermifflin.com",
       "phoneNumber": "2128675309",
@@ -47,7 +47,7 @@
       "birthday": "05 October 1975"
     },
     {
-      "id": -1,
+      "id": 2,
       "name": "Ada Lovelace",
       "email": "ada@analyticalengine.org",
       "phoneNumber": "2071234567",
@@ -56,7 +56,7 @@
       "birthday": "10 December 1815"
     },
     {
-      "id": -1,
+      "id": 3,
       "name": "Bruce Wayne",
       "email": "bruce.wayne@wayneenterprises.com",
       "phoneNumber": "5550199",
@@ -64,5 +64,13 @@
       "loans": [],
       "birthday": "01 January 1980"
     }
+  ],
+  "loans": [
+      {
+        "id": 0,
+        "bookID": 1,
+        "userID": 0,
+        "dueDate": "01 January 1980"
+      }
   ]
 }
