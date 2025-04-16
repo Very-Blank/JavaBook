@@ -47,12 +47,12 @@ public class SparseSet<T extends Data<T>>{
         return this.sparse.size() - 1;
     }
 
-    public void removeValueAt(T value) throws DataException {
-        if(0 <= value.getID() && value.getID() < sparse.size()){
-            int denseID = sparse.get(value.getID());
+    public void removeValueAt(int ID) throws DataException {
+        if(0 <= ID && ID < sparse.size()){
+            int denseID = sparse.get(ID);
 
             if(denseID != -1){
-                sparse.set(value.getID(), -1);
+                sparse.set(ID, -1);
                 dense.remove(denseID);
 
                 //All values have shifted back one!

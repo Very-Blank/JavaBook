@@ -85,13 +85,14 @@ public class Main extends Application {
                             newWindow.setButtonAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
                                     try {
-                                        database.deleteBook(newWindow.getBook());
+                                        database.deleteBook(newWindow.getBook().getID());
                                     } catch (Exception e) {
                                         System.out.println("failed to delete book");
                                         System.out.println(e.getMessage());
                                     }
 
                                     bookTab.updateContents(database.getBooks());
+                                    userTab.updateContents(database.getUsers());
                                     newWindow.close();
                                 }
                             }, "delete");
@@ -166,7 +167,7 @@ public class Main extends Application {
                             newWindow.setButtonAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
                                     try {
-                                        database.deleteUser(newWindow.getUser());
+                                        database.deleteUser(newWindow.getUser().getID());
                                     } catch (Exception e) {
                                         System.out.println("failed to delete user");
                                         System.out.println(e.getMessage());
@@ -179,8 +180,15 @@ public class Main extends Application {
 
                             newWindow.setSaveAction(new EventHandler<ActionEvent>() {
                                 public void handle(ActionEvent s) {
-                                    database.updateUser(newWindow.getUser());
+                                    int userID = database.updateUser(newWindow.getUser());
+                                    try {
+                                        database.updateLoansForUser(userID, newWindow.getLoanedBooks());
+                                    } catch (DataException e) {
+                                        System.out.println("failed to update user loaned books");
+                                        System.out.println(e.getMessage());
+                                    }
 
+                                    bookTab.updateContents(database.getBooks());
                                     userTab.updateContents(database.getUsers());
                                     newWindow.close();
                                 }
@@ -213,8 +221,16 @@ public class Main extends Application {
 
                     newWindow.setSaveAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent s) {
-                            database.addUser(newWindow.getUser());
+                            int userID = database.updateUser(newWindow.getUser());
 
+                            try {
+                                database.updateLoansForUser(userID, newWindow.getLoanedBooks());
+                            } catch (DataException e) {
+                                System.out.println("failed to update user loaned books");
+                                System.out.println(e.getMessage());
+                            }
+
+                            bookTab.updateContents(database.getBooks());
                             userTab.updateContents(database.getUsers());
                             tabBar.requestLayout();
                             newWindow.close();

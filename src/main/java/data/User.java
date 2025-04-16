@@ -75,13 +75,12 @@ public class User extends Data<User> {
                 this.birthday);
     }
 
-    public void update(String name, String email, String countryCode, String phoneNumber, ArrayList<Integer> loans,
+    public void update(String name, String email, String countryCode, String phoneNumber,
             LocalDate birthday) {
         this.name = name;
         this.email = email;
         this.countryCode = countryCode;
         this.phoneNumber = phoneNumber;
-        this.loans = loans;
         this.birthday = birthday;
     }
 
@@ -103,6 +102,10 @@ public class User extends Data<User> {
 
     public ArrayList<Integer> getLoans() {
         return this.loans;
+    }
+
+    public void setLoans(ArrayList<Integer> loans){
+        this.loans = loans;
     }
 
     public LocalDate getBirthday() {

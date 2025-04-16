@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -47,7 +50,7 @@ public class Database {
                 JSONObject loan = loans.getJSONObject(i);
                 Loan newLoan = new Loan();
                 newLoan.fromJsonObject(loan);
-                this.addLoan(newLoan);
+                this.updateLoan(newLoan);
             }
 
         } catch (Exception e) {
@@ -59,9 +62,13 @@ public class Database {
         return this.books.setValueAt(book);
     }
 
-    public void deleteBook(Book book) throws DataException {
-        // FIXME: DELETE LOANS
-        this.books.removeValueAt(book);
+    public void deleteBook(int ID) throws DataException {
+        Book book = this.getBook(ID);
+        if (0 <= book.getLoan()) {
+            this.deleteLoan(book.getLoan());
+        }
+
+        this.books.removeValueAt(ID);
     }
 
     public ArrayList<Book> getBooks() {
@@ -82,7 +89,7 @@ public class Database {
         ArrayList<Book> books = getBooks();
         int i = 0;
         while (i < books.size()) {
-            if (books.get(i).getLoan() >= 0) {
+            if (0 <= books.get(i).getLoan()) {
                 books.remove(i);
             } else {
                 i++;
@@ -111,19 +118,68 @@ public class Database {
         return this.users.setValueAt(user);
     }
 
-    public void deleteUser(User user) throws DataException {
-        // FIXME: DELETE LOANS
-        this.users.removeValueAt(user);
+    public void deleteUser(int ID) throws DataException {
+        User user = this.users.get(ID);
+        ArrayList<Integer> loans = user.getLoans();
+        for (int i = 0; i < loans.size(); i++) {
+            Loan loan = this.loans.get(loans.get(i));
+            Book book = this.books.get(loan.getBookID());
+
+            book.setLoan(-1);
+            this.loans.removeValueAt(loans.get(i));
+        }
+
+        this.users.removeValueAt(ID);
     }
 
-    public void updateLoansFor(User user, ArrayList<Book> loanedBooks) throws DataException{
+    public void updateLoansForUser(int ID, ArrayList<Book> loanedBooks) throws DataException{
+        ArrayList<Integer> newLoans = new ArrayList<Integer>(loanedBooks.size());
+        HashSet<Integer> seenLoans = new HashSet<Integer>();
+        User user = this.users.get(ID);
 
+        for (int i = 0; i < loanedBooks.size(); i++) {
+            int loanID = loanedBooks.get(i).getLoan();
+            Book loanedBook = this.books.get(loanedBooks.get(i).getID());
+            //Old loan
+            if (0 <= loanID) {
+                Loan loan = this.loans.get(loanID);
+                if(loan.getUserID() != user.getID() || loan.getBookID() != loanedBook.getID()){
+                    throw new DataException("Incorrect ID's for loan");
+                }
+
+                seenLoans.add(loan.getID());
+                newLoans.add(loan.getID());
+            } else{ //New loan
+                if(0 <= loanedBook.getLoan()){
+                    throw new DataException("Book was loaned by somebody else");
+                }
+
+                Loan newLoan = new Loan(-1, loanedBook.getID(), user.getID(), LocalDate.now());
+                int newLoanID = this.updateLoan(newLoan);
+                loanedBook.setLoan(newLoanID);
+                newLoans.add(newLoanID);
+            }
+        }
+
+        ArrayList<Integer> oldLoans = user.getLoans();
+        for (int i = 0; i < oldLoans.size(); i++) {
+            if (!seenLoans.contains(oldLoans.get(i))) {
+                Loan loan = this.loans.get(oldLoans.get(i));
+                Book book = this.books.get(loan.getBookID());
+
+                book.setLoan(-1);
+                this.loans.removeValueAt(oldLoans.get(i));
+            }
+        }
+
+
+        user.setLoans(newLoans);
     }
 
     // User might be a copy with wrong data!
     // So we get the orginal!
     public ArrayList<Book> getUserLoanedBooks(User userCopy) throws DataException {
-        User user = users.get(userCopy.getID());
+        User user = this.users.get(userCopy.getID());
         ArrayList<Integer> loans = user.getLoans();
 
         ArrayList<Book> books = new ArrayList<Book>(loans.size());
@@ -148,12 +204,11 @@ public class Database {
         return this.users.get(ID).copy();
     }
 
-    // FIXME: ADD ID CHECKING HERE AND VALIDATION
     public int updateUser(User user) {
         return this.users.setValueAt(user);
     }
 
-    public int addLoan(Loan loan) {
+    public int updateLoan(Loan loan) {
         return this.loans.setValueAt(loan);
     }
 
@@ -161,7 +216,21 @@ public class Database {
         return this.loans.get(ID).copy();
     }
 
-    public void deleteLoan(Loan loan) throws DataException {
-        this.loans.removeValueAt(loan);
+    public void deleteLoan(int ID) throws DataException {
+        Loan loan = this.loans.get(ID);
+        Book book = this.books.get(loan.getBookID());
+        User user = this.users.get(loan.getUserID());
+
+        ArrayList<Integer> loans = user.getLoans();
+        for (int i = 0; i < loans.size(); i++) {
+            if (loans.get(i) == ID) {
+                loans.remove(i);
+                break;
+            }
+        }
+
+        book.setLoan(-1);
+
+        this.loans.removeValueAt(ID);
     }
 }

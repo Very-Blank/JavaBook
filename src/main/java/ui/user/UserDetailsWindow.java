@@ -41,7 +41,7 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
         this.user = user;
 
         this.availableBooks = availableBooks;
-        this.loanedBooks = availableBooks;
+        this.loanedBooks = loanedBooks;
 
         this.name = this.newTextField(this.user.getName(), this.textWidth);
         this.email = this.newTextField(this.user.getEmail(), this.textWidth);
@@ -73,19 +73,26 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
             }
         });
 
-        ScrollableBookTab loanTab = new ScrollableBookTab(this.assets, "Available Books ", availableBooks);
-        ScrollableBookTab returnLoanTab = new ScrollableBookTab(this.assets, "Loaned Books ", loanedBooks);
+        ScrollableBookTab loanTab = new ScrollableBookTab(this.assets, "Available Books ", this.availableBooks);
+        ScrollableBookTab returnLoanTab = new ScrollableBookTab(this.assets, "Loaned Books ", this.loanedBooks);
 
         loanTab.setUpdateNotifier(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 ArrayList<BookBox> bookBoxs = loanTab.getBookBoxs();
                 for (int i = 0; i < bookBoxs.size(); i++) {
                     BookBox bookbox = bookBoxs.get(i);
+                    int ID = bookbox.getBook().getID();
                     bookbox.setOnMouseClicked((_) -> {
-                        availableBooks.remove(bookbox.getBook());
+                        for (int j = 0; j < availableBooks.size(); j++) {
+                            if (ID == availableBooks.get(j).getID()) {
+                                availableBooks.remove(j);
+                            }
+                        }
+
                         loanedBooks.add(bookbox.getBook());
-                        returnLoanTab.updateContents(loanedBooks);
+
                         loanTab.updateContents(availableBooks);
+                        returnLoanTab.updateContents(loanedBooks);
                     });
                 }
             }
@@ -96,19 +103,26 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
                 ArrayList<BookBox> bookBoxs = returnLoanTab.getBookBoxs();
                 for (int i = 0; i < bookBoxs.size(); i++) {
                     BookBox bookbox = bookBoxs.get(i);
+                    int ID = bookbox.getBook().getID();
+
                     bookbox.setOnMouseClicked((_) -> {
-                        loanedBooks.remove(bookbox.getBook());
+                        for (int j = 0; j < loanedBooks.size(); j++) {
+                            if (ID == loanedBooks.get(j).getID()) {
+                                loanedBooks.remove(j);
+                            }
+                        }
+
                         bookbox.getBook().setLoan(-1);
                         availableBooks.add(bookbox.getBook());
-                        returnLoanTab.updateContents(loanedBooks);
+
                         loanTab.updateContents(availableBooks);
+                        returnLoanTab.updateContents(loanedBooks);
                     });
                 }
             }
         });
 
         tabBar.getTabs().addAll(loanTab, returnLoanTab);
-        // tabBar.requestLayout();
 
         hbox.getChildren().addAll(detailHolder, tabBar);
 
@@ -121,8 +135,7 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
 
     public User getUser() {
         this.user.update(this.name.getText(), this.email.getText(), this.phoneNumber.getCountryCode(),
-                this.phoneNumber.getPhoneNumber(),
-                this.user.getLoans(), getDatePickerValue());
+                this.phoneNumber.getPhoneNumber(), getDatePickerValue());
         return this.user;
     }
 

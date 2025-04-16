@@ -51,10 +51,10 @@ public class Book extends Data<Book> {
 
     public JSONObject toJson() {
         JSONObject object = new JSONObject();
-        object.put("id", "" + this.getID());
-        object.put("loan", "" + this.loan);
+        object.put("id", this.getID());
+        object.put("loan", this.loan);
         object.put("title", this.title);
-        object.put("author", "" + this.author);
+        object.put("author", this.author);
         object.put("summary", this.summary);
         object.put("imagePath", this.imagePath);
         object.put("publication", Data.dateToString(this.publication));
@@ -63,7 +63,7 @@ public class Book extends Data<Book> {
     }
 
     public String loanToString() {
-        if (this.loan >= 0) {
+        if (0 <= this.loan) {
             return "Loaned";
         } else {
             return "Available";
