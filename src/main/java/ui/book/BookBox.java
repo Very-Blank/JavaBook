@@ -34,11 +34,11 @@ public class BookBox extends VBox {
         this.setMinSize(this.width, this.height);
         this.setMaxSize(this.width, this.height);
 
-        this.offset = (this.width - this.contentSize)/2.0;
+        this.offset = (this.width - this.contentSize) / 2.0;
         this.book = book;
 
         try {
-            FileInputStream input = new FileInputStream(book.imagePath());
+            FileInputStream input = new FileInputStream(book.getImagePath());
             Image data = new Image(input);
 
             ImageView image = new ImageView(data);
@@ -59,17 +59,17 @@ public class BookBox extends VBox {
             this.visual = pane;
         }
 
-        this.title = createText(this.book.title(), assets);
-        VBox.setMargin(this.title, new Insets(this.offset/3.0, 0, 0, this.offset/3.0));
+        this.title = createText(this.book.getTitle(), assets);
+        VBox.setMargin(this.title, new Insets(this.offset / 3.0, 0, 0, this.offset / 3.0));
 
-        this.author = createText(this.book.author(), assets);
-        VBox.setMargin(this.author, new Insets(0, 0, 0, this.offset/3.0));
+        this.author = createText(this.book.getAuthor(), assets);
+        VBox.setMargin(this.author, new Insets(0, 0, 0, this.offset / 3.0));
 
-        this.publicationDate = createText(Data.dateToString(this.book.publication()), assets);
-        VBox.setMargin(this.publicationDate, new Insets(0, 0, 0, this.offset/3.0));
+        this.publicationDate = createText(Data.dateToString(this.book.getPublication()), assets);
+        VBox.setMargin(this.publicationDate, new Insets(0, 0, 0, this.offset / 3.0));
 
         this.status = createText(this.book.loanToString(), assets);
-        VBox.setMargin(this.status, new Insets(0, 0, this.offset/3.0, this.offset/3.0));
+        VBox.setMargin(this.status, new Insets(0, 0, this.offset / 3.0, this.offset / 3.0));
 
         VBox box = new VBox(title, author, publicationDate, status);
         box.setSpacing(5.0);
@@ -81,16 +81,15 @@ public class BookBox extends VBox {
         super.setBackground(assets.surface);
     }
 
-    public Label createText(String string, Assets assets){
+    public Label createText(String string, Assets assets) {
         Label label = new Label(string);
         label.setFont(assets.fonts.normal);
         label.setTextFill(assets.textColor);
-        label.setMaxWidth(this.contentSize - this.offset/3.0 * 2);
+        label.setMaxWidth(this.contentSize - this.offset / 3.0 * 2);
         return label;
     }
 
-    public Book getBook(){
+    public Book getBook() {
         return this.book;
     }
 }
-

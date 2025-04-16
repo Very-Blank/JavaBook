@@ -62,7 +62,7 @@ public class Book extends Data<Book> {
         return object;
     }
 
-    public String loanToString(){
+    public String loanToString() {
         if (this.loan >= 0) {
             return "Loaned";
         } else {
@@ -78,27 +78,31 @@ public class Book extends Data<Book> {
         this.publication = publication;
     }
 
-    public int loan(){
+    public int getLoan() {
         return this.loan;
     }
 
-    public String title() {
+    public void setLoan(int ID) {
+        this.loan = ID;
+    }
+
+    public String getTitle() {
         return this.title;
     }
 
-    public String author() {
+    public String getAuthor() {
         return this.author;
     }
 
-    public String summary() {
+    public String getSummary() {
         return this.summary;
     }
 
-    public String imagePath() {
+    public String getImagePath() {
         return this.imagePath;
     }
 
-    public LocalDate publication() {
+    public LocalDate getPublication() {
         return this.publication;
     }
 }

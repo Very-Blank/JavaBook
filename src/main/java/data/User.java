@@ -85,27 +85,27 @@ public class User extends Data<User> {
         this.birthday = birthday;
     }
 
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
-    public String email() {
+    public String getEmail() {
         return this.email;
     }
 
-    public String phoneNumber() {
+    public String getPhoneNumber() {
         return this.phoneNumber;
     }
 
-    public String countryCode() {
+    public String getCountryCode() {
         return this.countryCode;
     }
 
-    public ArrayList<Integer> loans() {
+    public ArrayList<Integer> getLoans() {
         return this.loans;
     }
 
-    public LocalDate birthday() {
+    public LocalDate getBirthday() {
         return this.birthday;
     }
 }

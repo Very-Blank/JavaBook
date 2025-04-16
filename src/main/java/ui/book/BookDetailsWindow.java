@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import ui.*;
 import data.Book;
 
-public class BookDetailsWindow extends DetailsWindow<VBox>{
+public class BookDetailsWindow extends DetailsWindow<VBox> {
     private TextField title;
     private TextField author;
     private TextArea summary;
@@ -30,37 +30,36 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
 
     private final double textWidth = 450;
 
-    public BookDetailsWindow(Book book, String loanedBy, Assets assets){
+    public BookDetailsWindow(Book book, String loanedBy, Assets assets) {
         super(new VBox(), assets, "Book Details", "Edit book");
         this.book = book;
-        this.imagePath = new Label(book.imagePath());
-        this.summary = new TextArea(this.book.summary());
+        this.imagePath = new Label(book.getImagePath());
+        this.summary = new TextArea(this.book.getSummary());
         this.datePicker = new DatePicker();
 
-        this.title = newTextField(this.book.title(), this.textWidth);
+        this.title = newTextField(this.book.getTitle(), this.textWidth);
         LabeledField<TextField> title = new LabeledField<TextField>("Title:", this.title, assets);
 
-        this.author = newTextField(this.book.author(), this.textWidth);
+        this.author = newTextField(this.book.getAuthor(), this.textWidth);
         LabeledField<TextField> author = new LabeledField<TextField>("Author:", this.author, assets);
 
         this.summary.setMinWidth(this.textWidth);
         this.summary.setMaxWidth(this.textWidth);
         this.summary.setStyle(String.format("""
-            -fx-text-fill: %s;
-            -fx-control-inner-background: %s;
-            -fx-border-color: %s;
-            -fx-border-width: 0;
-            -fx-border-height: 0;
-            -fx-focus-color: %s;
-            -fx-faint-focus-color: %s;
-        """, assets.white1, assets.gray2, assets.gray2, assets.gray2, assets.gray2, assets.gray2));
-
+                    -fx-text-fill: %s;
+                    -fx-control-inner-background: %s;
+                    -fx-border-color: %s;
+                    -fx-border-width: 0;
+                    -fx-border-height: 0;
+                    -fx-focus-color: %s;
+                    -fx-faint-focus-color: %s;
+                """, assets.white1, assets.gray2, assets.gray2, assets.gray2, assets.gray2, assets.gray2));
 
         LabeledField<TextArea> summary = new LabeledField<TextArea>("Summary:", this.summary, assets);
 
-        this.datePicker.setValue(book.publication());
-        LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Publication Date:", this.datePicker, assets);
-
+        this.datePicker.setValue(book.getPublication());
+        LabeledField<DatePicker> datePicker = new LabeledField<DatePicker>("Publication Date:", this.datePicker,
+                assets);
 
         LabeledField<HBox> path = new LabeledField<HBox>("ImagePath:", createLabelField(this.imagePath), assets);
 
@@ -78,12 +77,13 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
         });
 
         this.content.getChildren().addAll(title, author, summary, datePicker, path);
-        if(loanedBy != null){ 
-            this.content.getChildren().add(new LabeledField<HBox>("Loaned by:", createLabelField(new Label(loanedBy)), assets));
+        if (loanedBy != null) {
+            this.content.getChildren()
+                    .add(new LabeledField<HBox>("Loaned by:", createLabelField(new Label(loanedBy)), assets));
         }
     }
 
-    private HBox createLabelField(Label label){
+    private HBox createLabelField(Label label) {
         label.setMinHeight(25);
         label.setTextFill(this.assets.textColor);
         label.setMinWidth(this.textWidth);
@@ -97,24 +97,25 @@ public class BookDetailsWindow extends DetailsWindow<VBox>{
         return hbox;
     }
 
-    public Book getBook(){
-        this.book.update(this.title.getText(), this.author.getText(), this.summary.getText(), this.imagePath.getText(), getDatePickerValue());
+    public Book getBook() {
+        this.book.update(this.title.getText(), this.author.getText(), this.summary.getText(), this.imagePath.getText(),
+                getDatePickerValue());
         return this.book;
     }
 
-    public void setDatePickerValue(LocalDate date){
+    public void setDatePickerValue(LocalDate date) {
         this.datePicker.setValue(date);
     }
 
-    public LocalDate getDatePickerValue(){
+    public LocalDate getDatePickerValue() {
         return this.datePicker.getValue();
     }
 
-    public void setDatePickerAction(EventHandler<ActionEvent> action){
+    public void setDatePickerAction(EventHandler<ActionEvent> action) {
         this.datePicker.setOnAction(action);
     }
 
-    public void setImagePathAction(EventHandler<MouseEvent> action){
+    public void setImagePathAction(EventHandler<MouseEvent> action) {
         this.imagePath.setOnMouseClicked(action);
     }
 }
