@@ -39,11 +39,11 @@ public class Loan extends Data<Loan> {
         return object;
     }
 
-    public int bookID(){
+    public int getBookID(){
         return this.bookID;
     }
 
-    public int userID(){
+    public int getUserID(){
         return this.userID;
     }
 

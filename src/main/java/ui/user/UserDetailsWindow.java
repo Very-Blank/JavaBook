@@ -43,9 +43,9 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
         this.availableBooks = availableBooks;
         this.loanedBooks = availableBooks;
 
-        this.name = this.newTextField(this.user.name(), this.textWidth);
-        this.email = this.newTextField(this.user.email(), this.textWidth);
-        this.phoneNumber = new PhoneNumber(this.user.countryCode(), this.user.phoneNumber(), assets);
+        this.name = this.newTextField(this.user.getName(), this.textWidth);
+        this.email = this.newTextField(this.user.getEmail(), this.textWidth);
+        this.phoneNumber = new PhoneNumber(this.user.getCountryCode(), this.user.getPhoneNumber(), assets);
         this.datePicker = new DatePicker(LocalDate.now());
 
         LabeledField<TextField> name = new LabeledField<TextField>("Name:", this.name, this.assets);
@@ -98,6 +98,7 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
                     BookBox bookbox = bookBoxs.get(i);
                     bookbox.setOnMouseClicked((_) -> {
                         loanedBooks.remove(bookbox.getBook());
+                        bookbox.getBook().setLoan(-1);
                         availableBooks.add(bookbox.getBook());
                         returnLoanTab.updateContents(loanedBooks);
                         loanTab.updateContents(availableBooks);
@@ -105,7 +106,6 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
                 }
             }
         });
-
 
         tabBar.getTabs().addAll(loanTab, returnLoanTab);
         // tabBar.requestLayout();
@@ -115,16 +115,14 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
         super.content.getChildren().addAll(hbox);
     }
 
-    public User getUser() {
-        ArrayList<Loan> loans = new ArrayList<Loan>(this.loanedBooks.size());
-        for (int i = 0; i < this.loanedBooks.size(); i++) {
-            Loan loan = new Loan(-1, this.loanedBooks.get(i).getID(), this.user.getID(), LocalDate.now());
-            loans.add(loan);
-        }
+    public ArrayList<Book> getLoanedBooks() {
+        return this.loanedBooks;
+    }
 
+    public User getUser() {
         this.user.update(this.name.getText(), this.email.getText(), this.phoneNumber.getCountryCode(),
                 this.phoneNumber.getPhoneNumber(),
-                this.user.loans(), getDatePickerValue());
+                this.user.getLoans(), getDatePickerValue());
         return this.user;
     }
 

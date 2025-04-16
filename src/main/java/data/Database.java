@@ -82,9 +82,9 @@ public class Database {
         ArrayList<Book> books = getBooks();
         int i = 0;
         while (i < books.size()) {
-            if (books.get(i).loan() >= 0) {
+            if (books.get(i).getLoan() >= 0) {
                 books.remove(i);
-            } else{
+            } else {
                 i++;
             }
         }
@@ -98,10 +98,10 @@ public class Database {
     }
 
     // Returns null if loan is invalid
-    public String getLoanerName(Book book){
+    public String getLoanerName(Book book) {
         try {
-            Loan loan = this.getLoan(book.loan());
-            return this.getUser(loan.userID()).name();
+            Loan loan = this.getLoan(book.getLoan());
+            return this.getUser(loan.getUserID()).getName();
         } catch (DataException _) {
             return null;
         }
@@ -124,11 +124,11 @@ public class Database {
     // So we get the orginal!
     public ArrayList<Book> getUserLoanedBooks(User userCopy) throws DataException {
         User user = users.get(userCopy.getID());
-        ArrayList<Integer> loans = user.loans();
+        ArrayList<Integer> loans = user.getLoans();
 
         ArrayList<Book> books = new ArrayList<Book>(loans.size());
         for (int i = 0; i < loans.size(); i++) {
-            books.add(this.books.get(this.loans.get(loans.get(i)).bookID()).copy());
+            books.add(this.books.get(this.loans.get(loans.get(i)).getBookID()).copy());
         }
 
         return books;

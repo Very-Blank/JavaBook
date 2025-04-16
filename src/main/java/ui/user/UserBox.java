@@ -25,7 +25,7 @@ public class UserBox extends HBox {
         this.setPrefHeight(50);
         this.setAlignment(Pos.CENTER_LEFT);
 
-        this.getChildren().addAll(fieldStart("Full Name", this.user.name(), assets), field("Email", this.user.email(), assets), field("PhoneNumber", this.user.countryCode() + " " + this.user.phoneNumber(), assets), field("Birthday", Data.dateToString(this.user.birthday()), assets));
+        this.getChildren().addAll(fieldStart("Full Name", this.user.getName(), assets), field("Email", this.user.getEmail(), assets), field("PhoneNumber", this.user.getCountryCode() + " " + this.user.getPhoneNumber(), assets), field("Birthday", Data.dateToString(this.user.getBirthday()), assets));
         this.setBackground(assets.surface);
     }
 
