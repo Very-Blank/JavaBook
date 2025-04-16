@@ -102,7 +102,7 @@ public class Database {
         try {
             Loan loan = this.getLoan(book.loan());
             return this.getUser(loan.userID()).name();
-        } catch (Exception e) {
+        } catch (DataException _) {
             return null;
         }
     }
@@ -114,6 +114,10 @@ public class Database {
     public void deleteUser(User user) throws DataException {
         // FIXME: DELETE LOANS
         this.users.removeValueAt(user);
+    }
+
+    public void updateLoansFor(User user, ArrayList<Book> loanedBooks) throws DataException{
+
     }
 
     // User might be a copy with wrong data!
