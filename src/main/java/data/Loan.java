@@ -31,9 +31,9 @@ public class Loan extends Data<Loan> {
 
     public JSONObject toJsonObject(){
         JSONObject object = new JSONObject();
-        object.put("id", "" + this.getID());
-        object.put("userID", "" + this.bookID);
-        object.put("bookID", this.userID);
+        object.put("id", this.getID());
+        object.put("userID", this.userID);
+        object.put("bookID", this.bookID);
         object.put("dueDate", Data.dateToString(this.dueDate));
 
         return object;
