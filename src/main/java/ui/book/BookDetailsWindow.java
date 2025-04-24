@@ -1,20 +1,13 @@
 package ui.book;
 
 import javafx.stage.*;
-import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
-import javafx.scene.image.*;
 import javafx.geometry.*;
 import javafx.event.*;
 import javafx.scene.input.*;
 import javafx.stage.FileChooser.ExtensionFilter;
-import java.io.FileInputStream;
 import java.io.File;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.time.LocalDate;
 
 import ui.*;

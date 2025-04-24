@@ -1,19 +1,12 @@
 package ui;
 
 import javafx.stage.*;
-import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.control.TabPane.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import javafx.scene.image.*;
 import javafx.geometry.*;
-import javafx.event.*;
-import javafx.scene.input.*;
-import javafx.event.EventHandler;
 import java.util.Vector;
-import java.util.Arrays;
 import javafx.application.Platform;
 
 public class FuckFxMenuButton extends Button {

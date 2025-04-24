@@ -1,27 +1,19 @@
 package ui.user;
 
-import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.control.TabPane.TabClosingPolicy;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
-import javafx.scene.image.*;
-import javafx.geometry.*;
 import javafx.application.Platform;
 import javafx.event.*;
-import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.time.LocalDate;
 import java.util.Set;
 
 import ui.*;
 import ui.book.BookBox;
 import ui.book.ScrollableBookTab;
 import data.Book;
-import data.Loan;
 import data.User;
 
 public class UserDetailsWindow extends DetailsWindow<VBox> {

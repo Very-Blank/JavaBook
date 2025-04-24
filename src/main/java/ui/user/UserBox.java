@@ -1,14 +1,8 @@
 package ui.user;
 
-import javafx.stage.*;
-import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
-import javafx.scene.image.*;
 import javafx.geometry.*;
-import javafx.event.*;
 
 import ui.*;
 import data.Data;

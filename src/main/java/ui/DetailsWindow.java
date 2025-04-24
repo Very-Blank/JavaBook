@@ -1,18 +1,13 @@
 package ui;
 
-import javafx.application.Application;
 
 import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
-import javafx.scene.image.*;
 import javafx.geometry.*;
 import javafx.event.*;
 
-import java.io.FileInputStream;
 import java.util.HashMap;
 
 public class DetailsWindow<T extends Pane> extends Stage {

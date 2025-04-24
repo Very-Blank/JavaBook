@@ -1,16 +1,10 @@
 package ui;
 
-import javafx.stage.*;
-import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.control.TabPane.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import javafx.scene.image.*;
 import javafx.geometry.*;
-import javafx.event.*;
-import javafx.event.EventHandler;
 
 public class FuckFxFinalMenuItem extends HBox{
     private FuckFxMenuItem menuItem;

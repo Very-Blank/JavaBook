@@ -1,7 +1,6 @@
 package ui;
 import javafx.scene.text.Font;
 import java.io.FileInputStream;
-import javafx.scene.paint.*;
 
 public class Fonts {
     public final Font normal;
