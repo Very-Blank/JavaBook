@@ -52,7 +52,7 @@ public class User extends Data<User> {
         this.loans = newList;
     }
 
-    public JSONObject toJson() {
+    public JSONObject toJsonObject() {
         JSONObject object = new JSONObject();
         object.put("id", this.getID());
         object.put("name", this.name);

@@ -29,7 +29,7 @@ public class Loan extends Data<Loan> {
     }
 
 
-    public JSONObject toJson(){
+    public JSONObject toJsonObject(){
         JSONObject object = new JSONObject();
         object.put("id", "" + this.getID());
         object.put("userID", "" + this.bookID);

@@ -49,7 +49,7 @@ public class Book extends Data<Book> {
         this.publication = Data.stringToDate(json.getString("publication"));
     }
 
-    public JSONObject toJson() {
+    public JSONObject toJsonObject() {
         JSONObject object = new JSONObject();
         object.put("id", this.getID());
         object.put("loan", this.loan);

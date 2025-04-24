@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.control.TabPane.*;
 import javafx.scene.paint.*;
+import javafx.scene.shape.Path;
 import javafx.scene.text.*;
 import javafx.scene.image.*;
 import javafx.geometry.*;
@@ -15,9 +16,13 @@ import javafx.event.*;
 import javafx.event.EventHandler;
 
 import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.time.LocalDate;
 
 import java.util.Vector;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -38,6 +43,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.database = new Database();
+
+        try {
+            String content = Files.readString(java.nio.file.Path.of("src/main/resources/settings.json"));
+            JSONObject jsonObject = new JSONObject(content);
+            this.database.readDataFromFile(jsonObject.getString("lastFile"));
+        } catch (Exception e) {
+            // No need to do anything, doesn't matter if this fails.
+        }
+
         this.assets = new Assets();
         this.topControlls = new TopControlls(this.assets);
         this.userTab = new ScrollableUserTab(this.assets, database.getUsers());

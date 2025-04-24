@@ -19,7 +19,7 @@ public abstract class Data<T extends Data<T>>{
     // Converts json object to data and sets it
     public abstract void fromJsonObject(JSONObject json); // I would love to use static here, but java is stupid.
 
-    public abstract JSONObject toJson();
+    public abstract JSONObject toJsonObject();
 
     public static String dateToString(LocalDate date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");

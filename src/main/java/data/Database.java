@@ -1,11 +1,11 @@
 package data;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import org.json.JSONObject;
@@ -20,42 +20,80 @@ public class Database {
         this.books = new SparseSet<Book>();
         this.loans = new SparseSet<Loan>();
         this.users = new SparseSet<User>();
+    }
 
-        try {
-            String content = Files.readString(Path.of("src/main/resources/data.json"));
-            JSONObject jsonObject = new JSONObject(content);
-            JSONArray books = jsonObject.getJSONArray("books");
+    public void readDataFromFile(String path) throws IOException {
+        this.books = new SparseSet<Book>();
+        this.loans = new SparseSet<Loan>();
+        this.users = new SparseSet<User>();
 
-            for (int i = 0; i < books.length(); i++) {
-                JSONObject book = books.getJSONObject(i);
-                Book newBook = new Book();
-                newBook.fromJsonObject(book);
+        String content = Files.readString(Path.of(path));
+        JSONObject jsonObject = new JSONObject(content);
+        JSONArray books = jsonObject.getJSONArray("books");
 
-                this.addBook(newBook);
-            }
+        for (int i = 0; i < books.length(); i++) {
+            JSONObject book = books.getJSONObject(i);
+            Book newBook = new Book();
+            newBook.fromJsonObject(book);
 
-            JSONArray users = jsonObject.getJSONArray("users");
-
-            for (int i = 0; i < users.length(); i++) {
-                JSONObject user = users.getJSONObject(i);
-                User newUser = new User();
-                newUser.fromJsonObject(user);
-
-                this.addUser(newUser);
-            }
-
-            JSONArray loans = jsonObject.getJSONArray("loans");
-
-            for (int i = 0; i < loans.length(); i++) {
-                JSONObject loan = loans.getJSONObject(i);
-                Loan newLoan = new Loan();
-                newLoan.fromJsonObject(loan);
-                this.updateLoan(newLoan);
-            }
-
-        } catch (Exception e) {
-            System.err.println("Error reading file: " + e.getMessage());
+            this.addBook(newBook);
         }
+
+        JSONArray users = jsonObject.getJSONArray("users");
+
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject user = users.getJSONObject(i);
+            User newUser = new User();
+            newUser.fromJsonObject(user);
+
+            this.addUser(newUser);
+        }
+
+        JSONArray loans = jsonObject.getJSONArray("loans");
+
+        for (int i = 0; i < loans.length(); i++) {
+            JSONObject loan = loans.getJSONObject(i);
+            Loan newLoan = new Loan();
+            newLoan.fromJsonObject(loan);
+            this.updateLoan(newLoan);
+        }
+    }
+
+    public void writeDataToFile(String path) throws IOException {
+        JSONObject jsonObject = new JSONObject();
+
+        JSONArray jsonBooks = new JSONArray();
+        ArrayList<Book> books = this.books.getDense();
+        for (int i = 0; i < books.size(); i++) {
+            JSONObject book = books.get(i).toJsonObject();
+            jsonBooks.put(book);
+        }
+
+        jsonObject.put("books", jsonBooks);
+
+        JSONArray jsonUsers = new JSONArray();
+        ArrayList<User> users = this.users.getDense();
+        for (int i = 0; i < users.size(); i++) {
+            JSONObject user = users.get(i).toJsonObject();
+            jsonUsers.put(user);
+        }
+
+        jsonObject.put("users", jsonUsers);
+
+        JSONArray jsonLoans = new JSONArray();
+        ArrayList<Loan> loans = this.loans.getDense();
+        for (int i = 0; i < loans.size(); i++) {
+            JSONObject loan = loans.get(i).toJsonObject();
+            jsonLoans.put(loan);
+        }
+
+        jsonObject.put("loans", jsonLoans);
+
+        // Write to file
+        FileWriter file = new FileWriter(path);
+        file.write(jsonObject.toString(4));
+        file.flush();
+        file.close();
     }
 
     public int addBook(Book book) {
