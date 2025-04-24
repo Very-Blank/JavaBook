@@ -96,6 +96,12 @@ public class Database {
         file.close();
     }
 
+    public void dumb(){
+        this.books = new SparseSet<Book>();
+        this.loans = new SparseSet<Loan>();
+        this.users = new SparseSet<User>();
+    }
+
     public int addBook(Book book) {
         return this.books.setValueAt(book);
     }

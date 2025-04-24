@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.time.LocalDate;
 
@@ -52,6 +53,7 @@ public class Main extends Application {
             this.database.readDataFromFile(jsonObject.getString("lastFile"));
         } catch (Exception e) {
             // No need to do anything, doesn't matter if this fails.
+            System.err.println(e.getMessage());
         }
 
         this.assets = new Assets();
@@ -60,8 +62,52 @@ public class Main extends Application {
         this.bookTab = new ScrollableBookTab(this.assets, "Books ", database.getBooks());
         this.tabBar = new TabPane();
 
-        this.topControlls.setQuitAction((_) -> {
-            primaryStage.close();
+        this.topControlls.setOpenAction((_) -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Json Files", "*.json"));
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            if (selectedFile != null) {
+                try {
+                    database.readDataFromFile(selectedFile.getAbsolutePath());
+                    bookTab.updateContents(database.getBooks());
+                    userTab.updateContents(database.getUsers());
+
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("lastFile", selectedFile.getAbsolutePath());
+                    FileWriter settings = new FileWriter("src/main/resources/settings.json");
+                    settings.write(jsonObject.toString());
+                    settings.flush();
+                    settings.close();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        });
+
+        this.topControlls.setNewAction((_) -> {
+            database.dumb();
+            bookTab.updateContents(database.getBooks());
+            userTab.updateContents(database.getUsers());
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            File selectedDirectory = directoryChooser.showDialog(primaryStage);
+            if (selectedDirectory != null) {
+                try (FileWriter file = new FileWriter(selectedDirectory.getAbsolutePath() + "/data.json")) {
+                    file.write("{}");
+                    file.flush();
+
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("lastFile", selectedDirectory.getAbsolutePath() + "/data.json");
+                    FileWriter settings = new FileWriter("src/main/resources/settings.json");
+                    settings.write(jsonObject.toString());
+                    settings.flush();
+                    settings.close();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+
+            System.out.println();
         });
 
         this.topControlls.setSaveAction((_) -> {
@@ -73,8 +119,13 @@ public class Main extends Application {
                 try {
                     database.writeDataToFile(selectedFile.getAbsolutePath());
                 } catch (Exception e) {
+                    System.err.println(e.getMessage());
                 }
             }
+        });
+
+        this.topControlls.setQuitAction((_) -> {
+            primaryStage.close();
         });
 
         this.tabBar.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
@@ -137,7 +188,7 @@ public class Main extends Application {
                             newWindow.showAndWait();
                         } catch (Exception e) {
                             System.out.println("failed to open window");
-                            System.out.println(e.getMessage());
+                            System.err.println(e.getMessage());
                         }
                     });
                 }
@@ -171,7 +222,7 @@ public class Main extends Application {
 
                 } catch (Exception e) {
                     System.out.println("failed to open window");
-                    System.out.println(e.getMessage());
+                    System.err.println(e.getMessage());
                 }
             }
         }, "add");
@@ -199,7 +250,7 @@ public class Main extends Application {
                                         database.deleteUser(newWindow.getUser().getID());
                                     } catch (Exception e) {
                                         System.out.println("failed to delete user");
-                                        System.out.println(e.getMessage());
+                                        System.err.println(e.getMessage());
                                     }
 
                                     userTab.updateContents(database.getUsers());
@@ -214,7 +265,7 @@ public class Main extends Application {
                                         database.updateLoansForUser(userID, newWindow.getLoanedBooks());
                                     } catch (DataException e) {
                                         System.out.println("failed to update user loaned books");
-                                        System.out.println(e.getMessage());
+                                        System.err.println(e.getMessage());
                                     }
 
                                     bookTab.updateContents(database.getBooks());
@@ -226,7 +277,7 @@ public class Main extends Application {
                             newWindow.showAndWait();
                         } catch (Exception e) {
                             System.out.println("failed to open window");
-                            System.out.println(e.getMessage());
+                            System.err.println(e.getMessage());
                         }
                     });
                 }
@@ -270,7 +321,7 @@ public class Main extends Application {
 
                 } catch (Exception e) {
                     System.out.println("failed to open window");
-                    System.out.println(e.getMessage());
+                    System.err.println(e.getMessage());
                 }
             }
         }, "add");
