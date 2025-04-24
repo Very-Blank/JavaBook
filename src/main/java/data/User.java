@@ -71,7 +71,7 @@ public class User extends Data<User> {
             newList.add(this.loans.get(i));
         }
 
-        return new User(this.getID(), this.name, this.email, this.phoneNumber, this.countryCode, newList,
+        return new User(this.getID(), this.name, this.email, this.countryCode, this.phoneNumber, newList,
                 this.birthday);
     }
 

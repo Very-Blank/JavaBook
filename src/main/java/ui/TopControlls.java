@@ -11,11 +11,10 @@ import javafx.geometry.*;
 import javafx.event.*;
 
 public class TopControlls extends HBox{
-    private FuckFxMenuItem saveItem;
     private FuckFxMenuItem openItem;
     private FuckFxMenuItem newItem;
-    public FuckFxMenuItem quitItem;
-    private MenuButton menuButton;
+    private FuckFxMenuItem saveItem;
+    private FuckFxMenuItem quitItem;
 
     public TopControlls(Assets assets){
         super();
@@ -24,6 +23,7 @@ public class TopControlls extends HBox{
 
         this.openItem = new FuckFxMenuItem("Open ");
         this.newItem = new FuckFxMenuItem("New ");
+        this.saveItem = new FuckFxMenuItem("New ");
         this.quitItem = new FuckFxMenuItem("Quit ");
 
         FuckFxMenuButton menu = new FuckFxMenuButton("Options ", this.openItem, this.newItem, this.quitItem);
@@ -43,5 +43,21 @@ public class TopControlls extends HBox{
         menu.setBackground(assets.elevated);
         menu.setFont(assets.fonts.normal);
         menu.setTextFill(assets.textColor);
+    }
+
+    public void setOpenAction(EventHandler<ActionEvent> action) {
+        this.openItem.setOnAction(action);
+    }
+
+    public void setNewAction(EventHandler<ActionEvent> action) {
+        this.newItem.setOnAction(action);
+    }
+
+    public void setSaveAction(EventHandler<ActionEvent> action) {
+        this.saveItem.setOnAction(action);
+    }
+
+    public void setQuitAction(EventHandler<ActionEvent> action) {
+        this.quitItem.setOnAction(action);
     }
 }

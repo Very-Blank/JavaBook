@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 
 import javafx.stage.*;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
@@ -15,6 +16,7 @@ import javafx.geometry.*;
 import javafx.event.*;
 import javafx.event.EventHandler;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.time.LocalDate;
@@ -56,12 +58,25 @@ public class Main extends Application {
         this.topControlls = new TopControlls(this.assets);
         this.userTab = new ScrollableUserTab(this.assets, database.getUsers());
         this.bookTab = new ScrollableBookTab(this.assets, "Books ", database.getBooks());
+        this.tabBar = new TabPane();
 
-        this.topControlls.quitItem.setOnAction((_) -> {
+        this.topControlls.setQuitAction((_) -> {
             primaryStage.close();
         });
 
-        this.tabBar = new TabPane();
+        this.topControlls.setSaveAction((_) -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Json Files", "*.json"));
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            if (selectedFile != null) {
+                try {
+                    database.writeDataToFile(selectedFile.getAbsolutePath());
+                } catch (Exception e) {
+                }
+            }
+        });
+
         this.tabBar.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         this.tabBar.setBackground(assets.background);
 
