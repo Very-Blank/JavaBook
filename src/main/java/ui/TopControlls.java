@@ -23,10 +23,10 @@ public class TopControlls extends HBox{
 
         this.openItem = new FuckFxMenuItem("Open ");
         this.newItem = new FuckFxMenuItem("New ");
-        this.saveItem = new FuckFxMenuItem("New ");
+        this.saveItem = new FuckFxMenuItem("Save ");
         this.quitItem = new FuckFxMenuItem("Quit ");
 
-        FuckFxMenuButton menu = new FuckFxMenuButton("Options ", this.openItem, this.newItem, this.quitItem);
+        FuckFxMenuButton menu = new FuckFxMenuButton("Options ", this.openItem, this.newItem, this.saveItem, this.quitItem);
         this.setMenuStyling(menu, assets);
 
         HBox.setMargin(menu, new Insets(5, 0, 5, 5));
