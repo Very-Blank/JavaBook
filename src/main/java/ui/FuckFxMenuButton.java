@@ -9,6 +9,12 @@ import javafx.geometry.*;
 import java.util.Vector;
 import javafx.application.Platform;
 
+/**
+ * Custom JavaFX menu button implementation with configurable popup positioning and styling.
+ * Provides extended control over menu appearance and behavior compared to standard MenuButton.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ */
 public class FuckFxMenuButton extends Button {
     private Popup popup;
     private VBox vbox;
@@ -30,6 +36,11 @@ public class FuckFxMenuButton extends Button {
     private double width = 120;
     private double textSpacing = 5;
 
+    /**
+     * Creates menu button with specified label and initial menu items
+     * @param name button display text
+     * @param items initial menu items to populate
+     */
     public FuckFxMenuButton(String name, FuckFxMenuItem... items) {
         super(name);
         this.vbox = new VBox(5.0);
@@ -53,6 +64,7 @@ public class FuckFxMenuButton extends Button {
         }
     }
 
+    /** Displays popup menu relative to button position */
     private void openPopup(){
         if (this.menuItems.size() != 0) {
             Point2D coords = getPopupPos();
@@ -73,18 +85,26 @@ public class FuckFxMenuButton extends Button {
         }
     }
 
+    /** Hides the popup menu if visible */
     public void closePopup(){
         if (popup.isShowing()) {
             this.popup.hide();
         }
     }
 
+    /**
+     * Triggers menu display on activation
+     */
     @Override
     public void fire() {
         super.fire();
         openPopup();
     }
 
+    /**
+     * Calculates popup position based on current alignment settings
+     * @return screen coordinates for popup placement
+     */
     public Point2D getPopupPos(){
         Point2D screenCoords = this.localToScreen(new Point2D(0, 0));
         double x = screenCoords.getX() - menuOffset;
@@ -111,6 +131,10 @@ public class FuckFxMenuButton extends Button {
         return new Point2D(x, y);
     }
 
+    /**
+     * Adds new item to the dropdown menu
+     * @param menuItem menu item to add
+     */
     public void addMenuItem(FuckFxMenuItem menuItem){
         FuckFxFinalMenuItem finalMenuItem = new FuckFxFinalMenuItem(menuItem, this.insets, this.height, this.width, this.textSpacing);
 

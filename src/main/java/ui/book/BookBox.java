@@ -11,6 +11,12 @@ import data.Book;
 import data.Data;
 import ui.Assets;
 
+/**
+ * Visual component representing a book entry in a grid layout.
+ * Displays cover image, metadata, and loan status in a standardized card format.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ */
 public class BookBox extends VBox {
     private Node visual;
     private Label title;
@@ -24,6 +30,11 @@ public class BookBox extends VBox {
     private final double contentSize = 150;
     private final double offset;
 
+    /**
+     * Constructs book display card with image and metadata
+     * @param book Book object containing data to display
+     * @param assets styling resources for colors and fonts
+     */
     public BookBox(Book book, Assets assets) {
         super(5.0);
         this.setAlignment(Pos.CENTER);

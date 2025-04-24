@@ -8,10 +8,21 @@ import ui.*;
 import data.Data;
 import data.User;
 
+/**
+ * Custom UI component displaying user information in a card-like layout.
+ * Shows name, email, phone number and birthday with consistent styling.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ */
 public class UserBox extends HBox {
     private User user;
     private final double labelMargin = 10;
 
+    /**
+     * Constructs user information card with formatted data display
+     * @param user User object containing data to display
+     * @param assets styling resources for colors and fonts
+     */
     public UserBox(User user, Assets assets) {
         super(10);
         this.user = user;
@@ -23,6 +34,13 @@ public class UserBox extends HBox {
         this.setBackground(assets.surface);
     }
 
+    /**
+     * Creates left-aligned data field with special margin handling
+     * @param label field title text
+     * @param data field content text
+     * @param assets styling resources
+     * @return formatted VBox container with label and data
+     */
 
     public VBox fieldStart(String label, String data, Assets assets){
         Label lab = new Label(label);
@@ -43,6 +61,13 @@ public class UserBox extends HBox {
         return vbox;
     }
 
+    /**
+     * Creates standard data field with centered alignment
+     * @param label field title text
+     * @param data field content text
+     * @param assets styling resources
+     * @return formatted VBox container with label and data
+     */
     public VBox field(String label, String data, Assets assets){
         Label lab = new Label(label);
         lab.setFont(assets.fonts.normal);

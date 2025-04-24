@@ -25,6 +25,13 @@ import ui.book.*;
 import ui.*;
 import data.*;
 
+/**
+ * Main application class for library management system GUI.
+ * Handles primary stage setup, database integration, and user interface components.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ */
+
 public class Main extends Application {
     private TopControlls topControlls;
     private TabPane tabBar;
@@ -34,6 +41,12 @@ public class Main extends Application {
     private VBox root;
     private Assets assets;
 
+    /**
+     * Main entry point for JavaFX application. Initializes database connection,
+     * UI components, and event handlers for user interactions.
+     * 
+     * @param primaryStage primary window container for the application
+     */
     @Override
     public void start(Stage primaryStage) {
         this.database = new Database();
@@ -336,7 +349,10 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
+    /**
+     * Program entry point that delegates to JavaFX application launch.
+     * @param args command line arguments (unused)
+     */
     public static void main(String[] args) {
         launch(args);
     }

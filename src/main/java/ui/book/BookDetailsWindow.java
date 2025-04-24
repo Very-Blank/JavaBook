@@ -13,6 +13,12 @@ import java.time.LocalDate;
 import ui.*;
 import data.Book;
 
+/**
+ * Modal window for viewing/editing book details including cover image selection.
+ * Provides fields for metadata editing and loan status display.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ */
 public class BookDetailsWindow extends DetailsWindow<VBox> {
     private TextField title;
     private TextField author;
@@ -23,6 +29,12 @@ public class BookDetailsWindow extends DetailsWindow<VBox> {
 
     private final double textWidth = 450;
 
+    /**
+     * Constructs book detail window with editable fields and image selection.
+     * @param book Book object to display/edit
+     * @param loanedBy name of loaner if book is borrowed (null if available)
+     * @param assets styling resources
+     */
     public BookDetailsWindow(Book book, String loanedBy, Assets assets) {
         super(new VBox(), assets, "Book Details", "Edit book");
         this.book = book;

@@ -9,7 +9,13 @@ import javafx.geometry.*;
 import javafx.event.*;
 
 import java.util.HashMap;
-
+/**
+ * Base class for modal detail windows with configurable buttons and content area.
+ * Provides common functionality for back/save actions and custom button management.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ * @param <T> type of main content pane (must extend Pane)
+ */
 public class DetailsWindow<T extends Pane> extends Stage {
     private Button backButton;
     private Button saveButton;
@@ -20,6 +26,13 @@ public class DetailsWindow<T extends Pane> extends Stage {
 
     private HashMap<String, Button> buttonMap;
 
+    /**
+     * Constructs detail window with specified content and controls
+     * @param content main content pane for the window
+     * @param assets styling resources and color definitions
+     * @param windowName title for the window
+     * @param details header text displayed above content
+     */
     public DetailsWindow(T content, Assets assets, String windowName, String details){
         super();
         super.setTitle(windowName);

@@ -3,17 +3,26 @@ package ui;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.paint.*;
-
-//import ui.Fonts;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+/**
+ * Composite UI component combining country code selection and phone number input.
+ * Provides validation to ensure numeric-only phone number entry.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ */
 public class PhoneNumber extends HBox {
     private FuckFxMenuButton countrySelector;
     private String selectedCountryCode;
     private TextField textField;
 
+    /**
+     * Constructs phone number input component with specified initial values.
+     * @param countryCode initial country code prefix (e.g. "+358")
+     * @param phoneNumber initial phone number digits
+     * @param assets styling resources and color definitions
+     */
     public PhoneNumber(String countryCode, String phoneNumber, Assets assets) {
         super();
         String[] countryCodes = new String[] { "+358", "+1", "+46", "+81", "+82" };
@@ -66,10 +75,13 @@ public class PhoneNumber extends HBox {
         super.getChildren().addAll(countrySelector, textField);
     }
 
+
+    /** @return currently selected country code prefix */
     public String getCountryCode() {
         return this.selectedCountryCode;
     }
 
+    /** @return sanitized phone number containing only digits */
     public String getPhoneNumber() {
         return this.textField.getText();
     }

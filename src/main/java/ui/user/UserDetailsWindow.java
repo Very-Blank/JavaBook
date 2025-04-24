@@ -16,6 +16,12 @@ import ui.book.ScrollableBookTab;
 import data.Book;
 import data.User;
 
+/**
+ * Modal window for viewing/editing user details and managing book loans.
+ * Features interactive lists for loaning/returning books through drag-and-drop-like UI.
+ * 
+ * @author aapeli.saarelainen.76@gmail.com
+ */
 public class UserDetailsWindow extends DetailsWindow<VBox> {
     private DatePicker datePicker;
     private TextField name;
@@ -28,6 +34,13 @@ public class UserDetailsWindow extends DetailsWindow<VBox> {
     private final double textWidth = 250;
     private User user;
 
+    /**
+     * Constructs user detail window with editable fields and loan management tabs.
+     * @param user User object to display/edit
+     * @param availableBooks books available for loaning
+     * @param loanedBooks books currently loaned by user
+     * @param assets styling resources
+     */
     public UserDetailsWindow(User user, ArrayList<Book> availableBooks, ArrayList<Book> loanedBooks, Assets assets) {
         super(new VBox(), assets, "User Details", "Edit User");
         this.user = user;
