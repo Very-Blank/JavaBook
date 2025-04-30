@@ -1,6 +1,9 @@
 package ui.user;
 
+import javafx.geometry.Insets;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.beans.value.ChangeListener;
 import java.util.ArrayList;
 import data.*;
 import ui.*;
@@ -13,6 +16,7 @@ import ui.*;
  */
 public class ScrollableUserTab extends ScrollableTab {
     private ArrayList<UserBox> userBoxs;
+    private TextField search;
 
     /**
      * Creates user tab with initial dataset
@@ -21,6 +25,14 @@ public class ScrollableUserTab extends ScrollableTab {
      */
     public ScrollableUserTab(Assets assets, ArrayList<User> userDatas) {
         super(assets, "Users ");
+        this.search = new TextField("");
+        HBox.setMargin(this.search, new Insets(0, 0, 0, 5));
+        this.search.setBackground(this.assets.elevated);
+        this.search.setStyle(String.format("-fx-text-fill: %s;", this.assets.white1));
+        this.search.setMinHeight(28);
+        this.search.setMinWidth(250);
+        this.search.setMaxWidth(250);
+        this.customHolder.getChildren().add(this.search);
         updateContents(userDatas);
     }
 
@@ -44,6 +56,10 @@ public class ScrollableUserTab extends ScrollableTab {
         content.setBackground(assets.background);
         this.scrollPane.setContent(content);
         super.updateContents();
+    }
+
+    public void addSearchListener(ChangeListener<String> listener) {
+        this.search.textProperty().addListener(listener);
     }
 
     /**

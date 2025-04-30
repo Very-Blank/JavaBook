@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.TabPane.*;
 import javafx.event.*;
 import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -40,6 +42,7 @@ public class Main extends Application {
     private Database database;
     private VBox root;
     private Assets assets;
+    private String searchString;
 
     /**
      * Main entry point for JavaFX application. Initializes database connection,
@@ -62,7 +65,8 @@ public class Main extends Application {
 
         this.assets = new Assets();
         this.topControlls = new TopControlls(this.assets);
-        this.userTab = new ScrollableUserTab(this.assets, database.getUsers());
+        this.searchString = "";
+        this.userTab = new ScrollableUserTab(this.assets, getUsers());
         this.bookTab = new ScrollableBookTab(this.assets, "Books ", database.getBooks());
         this.tabBar = new TabPane();
 
@@ -75,7 +79,7 @@ public class Main extends Application {
                 try {
                     database.readDataFromFile(selectedFile.getAbsolutePath());
                     bookTab.updateContents(database.getBooks());
-                    userTab.updateContents(database.getUsers());
+                    userTab.updateContents(getUsers());
 
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("lastFile", selectedFile.getAbsolutePath());
@@ -92,7 +96,7 @@ public class Main extends Application {
         this.topControlls.setNewAction((_) -> {
             database.dumb();
             bookTab.updateContents(database.getBooks());
-            userTab.updateContents(database.getUsers());
+            userTab.updateContents(getUsers());
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File selectedDirectory = directoryChooser.showDialog(primaryStage);
             if (selectedDirectory != null) {
@@ -176,7 +180,7 @@ public class Main extends Application {
                                     }
 
                                     bookTab.updateContents(database.getBooks());
-                                    userTab.updateContents(database.getUsers());
+                                    userTab.updateContents(getUsers());
                                     newWindow.close();
                                 }
                             }, "delete");
@@ -256,8 +260,7 @@ public class Main extends Application {
                                         System.out.println("failed to delete user");
                                         System.err.println(e.getMessage());
                                     }
-
-                                    userTab.updateContents(database.getUsers());
+                                    userTab.updateContents(getUsers());
                                     newWindow.close();
                                 }
                             }, "delete");
@@ -273,7 +276,7 @@ public class Main extends Application {
                                     }
 
                                     bookTab.updateContents(database.getBooks());
-                                    userTab.updateContents(database.getUsers());
+                                    userTab.updateContents(getUsers());
                                     newWindow.close();
                                 }
                             });
@@ -315,7 +318,7 @@ public class Main extends Application {
                             }
 
                             bookTab.updateContents(database.getBooks());
-                            userTab.updateContents(database.getUsers());
+                            userTab.updateContents(getUsers());
                             tabBar.requestLayout();
                             newWindow.close();
                         }
@@ -330,6 +333,15 @@ public class Main extends Application {
             }
         }, "add");
 
+        this.userTab.addSearchListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                searchString = newValue;
+                userTab.updateContents(getUsers());
+                tabBar.requestLayout();
+            }
+        });
+
 
         this.tabBar.getTabs().addAll(this.bookTab, this.userTab);
 
@@ -337,7 +349,7 @@ public class Main extends Application {
             if (newTab == bookTab) {
                 bookTab.updateContents(database.getBooks());
             } else if (newTab == userTab) {
-                userTab.updateContents(database.getUsers());
+                userTab.updateContents(getUsers());
             }
         });
 
@@ -348,6 +360,12 @@ public class Main extends Application {
         Scene scene = new Scene(this.root, 900, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private ArrayList<User> getUsers(){
+        ArrayList<User> users =  UserUtils.findUsersByName(database.getUsers(), searchString);
+        UserUtils.sortUsersByName(users);
+        return users;
     }
 
     /**

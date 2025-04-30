@@ -17,6 +17,7 @@ public abstract class ScrollableTab extends Tab {
     protected ScrollPane scrollPane;
     protected Assets assets;
     protected EventHandler<ActionEvent> updateNotifier;
+    protected HBox customHolder;
 
     private HBox buttonHolder;
     private HashMap<String, Button> buttonMap;
@@ -30,18 +31,22 @@ public abstract class ScrollableTab extends Tab {
         super();
         this.assets = assets;
         this.scrollPane = new ScrollPane();
+        this.customHolder = new HBox();
         this.buttonHolder = new HBox();
         this.buttonMap = new HashMap<String, Button>();
+
+        this.customHolder.setAlignment(Pos.CENTER_LEFT);
 
         super.setGraphic(newLabel(name));
         setScrollPaneSyling(this.scrollPane, this.assets);
 
-        this.buttonHolder.setBackground(this.assets.surface);
-        this.buttonHolder.setMinHeight(30);
+        HBox holder = new HBox(this.customHolder, this.buttonHolder);
+        holder.setBackground(this.assets.surface);
+        holder.setMinHeight(30);
 
         VBox vbox = new VBox(5);
         vbox.setBackground(this.assets.background);
-        vbox.getChildren().addAll(this.buttonHolder, this.scrollPane);
+        vbox.getChildren().addAll(holder, this.scrollPane);
         super.setContent(vbox);
     }
 
