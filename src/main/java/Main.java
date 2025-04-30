@@ -349,6 +349,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     /**
      * Program entry point that delegates to JavaFX application launch.
      * @param args command line arguments (unused)
